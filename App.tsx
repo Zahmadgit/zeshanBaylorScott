@@ -13,6 +13,7 @@ function App(): React.JSX.Element {
   return (
     <SafeAreaView style={styles.sectionContainer}>
       <Text>Yay its working</Text>
+      <Text>BRUH WORKS</Text>
     </SafeAreaView>
   );
 }
