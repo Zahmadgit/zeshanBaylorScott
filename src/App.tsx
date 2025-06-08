@@ -1,20 +1,29 @@
 import React from 'react';
-
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
+import {Provider} from 'react-redux';
+import {store} from './store/store';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import HospitalData from './components/HospitalData/HospitalData';
 
 function App(): React.JSX.Element {
   return (
-    <SafeAreaView style={styles.sectionContainer}>
-      <Text>Yay its working</Text>
-      <Text>BRUH WORKS</Text>
-      <HospitalData />
-    </SafeAreaView>
+    <Provider store={store}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.content}>
+          <Text>Yay its working</Text>
+          <Text>BRUH WORKS WEB</Text>
+          <HospitalData />
+        </View>
+      </SafeAreaView>
+    </Provider>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
+  container: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
     marginTop: 32,
     paddingHorizontal: 24,
   },
