@@ -15,21 +15,13 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 type RootStackParamList = {
   HospitalList: undefined;
   HospitalDetails: {hospitalData: any};
+  FlaggedHospitals: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HospitalList'>;
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
-  if (isNaN(date.getTime())) {
-    // Try parsing as ISO string
-    const isoString = dateString.replace(/T.*/, ''); // Remove time part
-    return new Date(isoString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  }
   return date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -70,7 +62,7 @@ const HospitalData = ({navigation}: Props) => {
         <Text style={styles.itemTitle}>{item.hospital_name}</Text>
         <Text style={styles.itemDetail}>{item.hospital_state}</Text>
         <Text style={styles.itemDetail}>
-          Last Updated: {formatDate(item.collection_week)}
+          Last Updated: {formatDate(item.collection_date)}
         </Text>
       </TouchableOpacity>
     );

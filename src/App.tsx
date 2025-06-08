@@ -1,40 +1,31 @@
 import React from 'react';
-import {Provider} from 'react-redux';
-import {store} from './store/store';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import HospitalData from './components/HospitalData/HospitalData';
-import HospitalDetails from './components/HospitalDetails/HospitalDetails';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+import NavigationScreen from './screens/NavigationScreen';
+import FlaggedHospitalsScreen from './screens/FlaggedHospitalsScreen';
 
-const Stack = createNativeStackNavigator();
+type RootStackParamList = {
+  NavigationScreen: undefined;
+  FlaggedHospitals: undefined;
+};
 
-function App(): React.JSX.Element {
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="HospitalList">
-          <Stack.Screen
-            name="HospitalList"
-            component={HospitalData}
-            options={{
-              title: 'Hospitals',
-              headerStyle: {
-                backgroundColor: '#fff',
-              },
-              headerTintColor: '#000',
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="NavigationScreen" component={NavigationScreen} />
+          <Stack.Screen 
+            name="FlaggedHospitals" 
+            component={FlaggedHospitalsScreen}
+            options={{ 
+              headerShown: true,
+              title: 'Flagged Hospitals'
             }}
-          />
-          <Stack.Screen
-            name="HospitalDetails"
-            component={HospitalDetails}
-            options={({route}) => ({
-              title:
-                route.params?.hospitalData?.hospital_name || 'Hospital Details',
-              headerStyle: {
-                backgroundColor: '#fff',
-              },
-              headerTintColor: '#000',
-            })}
           />
         </Stack.Navigator>
       </NavigationContainer>

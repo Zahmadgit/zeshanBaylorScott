@@ -1,19 +1,45 @@
 import React from 'react';
-import {View, Text, StyleSheet, Dimensions} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
 import {PieChart} from 'react-native-chart-kit';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useAppDispatch, useAppSelector} from '../../store/hooks';
+import {addFlaggedHospital, removeFlaggedHospital} from '../../store/flaggedHospitalsSlice';
 
 type RootStackParamList = {
   HospitalList: undefined;
   HospitalDetails: {hospitalData: any};
+  FlaggedHospitals: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HospitalDetails'>;
 
 const screenWidth = Dimensions.get('window').width;
 
-const HospitalDetails = ({route}: Props) => {
+const HospitalDetails = ({route, navigation}: Props) => {
   const {hospitalData} = route.params;
+  const dispatch = useAppDispatch();
+  const {flaggedHospitals} = useAppSelector((state) => state.flaggedHospitals);
+
+  const isFlagged = flaggedHospitals.some(
+    (h) => h.id === hospitalData.hospital_pk
+  );
+
+  const toggleFlag = () => {
+    if (isFlagged) {
+      // Remove from flagged if it exists
+      dispatch(removeFlaggedHospital(hospitalData.hospital_pk));
+    } else {
+      // Add to flagged
+      dispatch(
+        addFlaggedHospital({
+          id: hospitalData.hospital_pk,
+          hospital_name: hospitalData.hospital_name,
+          hospital_state: hospitalData.hospital_state,
+          collection_week: hospitalData.collection_week,
+        })
+      );
+    }
+  };
 
   if (!hospitalData) {
     return (
@@ -90,6 +116,22 @@ const HospitalDetails = ({route}: Props) => {
         <Text style={styles.hospitalLocation}>
           {hospitalData.hospital_state}
         </Text>
+        <TouchableOpacity
+          style={[
+            styles.flagButton,
+            isFlagged && styles.flagButtonActive,
+          ]}
+          onPress={() => {
+            toggleFlag();
+            if (isFlagged) {
+              navigation.navigate('FlaggedHospitals');
+            }
+          }}
+        >
+          <Text style={[styles.flagButtonText, isFlagged && styles.flagButtonTextActive]}>
+            {isFlagged ? '✓ Flagged' : 'Flag'}
+          </Text>
+        </TouchableOpacity>
       </View>
 
       {/* Display summary stats */}
@@ -138,6 +180,25 @@ const HospitalDetails = ({route}: Props) => {
 };
 
 const styles = StyleSheet.create({
+  flagButton: {
+    backgroundColor: '#fff',
+    padding: 8,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    marginTop: 8,
+  },
+  flagButtonActive: {
+    backgroundColor: '#4CAF50',
+    borderColor: '#4CAF50',
+  },
+  flagButtonText: {
+    color: '#333',
+    fontSize: 14,
+  },
+  flagButtonTextActive: {
+    color: '#fff',
+  },
   container: {
     flex: 1,
     padding: 16,

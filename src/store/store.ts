@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import paginationReducer from './paginationSlice';
 import { hospitalApi } from '../api/hospitalApi';
+import flaggedHospitalsReducer from './flaggedHospitalsSlice';
 
 export const store = configureStore({
   reducer: {
     pagination: paginationReducer,
     [hospitalApi.reducerPath]: hospitalApi.reducer,
+    flaggedHospitals: flaggedHospitalsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(hospitalApi.middleware),
