@@ -5,10 +5,19 @@ import {
   Text,
   ActivityIndicator,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {setPage, addItems} from '../../store/paginationSlice';
 import {useGetHospitalDataQuery} from '../../api/hospitalApi';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+
+type RootStackParamList = {
+  HospitalList: undefined;
+  HospitalDetails: {hospitalData: any};
+};
+
+type Props = NativeStackScreenProps<RootStackParamList, 'HospitalList'>;
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -19,7 +28,7 @@ const formatDate = (dateString: string) => {
   });
 };
 
-const HospitalData = () => {
+const HospitalData = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
   const {currentPage, itemsPerPage, allItems} = useAppSelector(
     state => state.pagination,
@@ -41,50 +50,118 @@ const HospitalData = () => {
     }
   };
 
-  if (error) {
-    return <Text>Error loading data</Text>;
-  }
+  const renderHospitalItem = (item: any) => {
+    const lastUpdated = new Date(item.collection_date).toLocaleDateString();
+    return (
+      <TouchableOpacity
+        style={styles.itemContainer}
+        onPress={() =>
+          navigation.navigate('HospitalDetails', {hospitalData: item})
+        }>
+        <Text style={styles.itemTitle}>{item.hospital_name}</Text>
+        <Text style={styles.itemDetail}>{item.hospital_state}</Text>
+        <Text style={styles.itemDetail}>
+          Last Updated: {formatDate(item.collection_date)}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
-      {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
-      <FlatList
-        data={allItems}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={({item}) => (
-          <View style={styles.itemContainer}>
-            <Text style={styles.itemTitle}>{item.hospital_name}</Text>
-            <Text>State: {item.state}</Text>
-            <Text>Collection Date: {formatDate(item.collection_week)}</Text>
-            <Text>
-              Total Beds: {item.all_adult_hospital_inpatient_beds_7_day_avg}
-            </Text>
-            <Text>
-              Occupied Beds:{' '}
-              {item.all_adult_hospital_inpatient_bed_occupied_7_day_avg}
-            </Text>
-          </View>
-        )}
-        onEndReached={handleLoadMore}
-        ListFooterComponent={
-          isFetching ? <ActivityIndicator size="small" color="#0000ff" /> : null
-        }
-      />
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : error ? (
+        <Text>Error loading data: {error.message}</Text>
+      ) : (
+        <FlatList
+          data={allItems}
+          renderItem={({item}) => renderHospitalItem(item)}
+          keyExtractor={item => item.hospital_name}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isFetching ? (
+              <ActivityIndicator size="large" color="#0000ff" />
+            ) : null
+          }
+        />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 16,
   },
   itemContainer: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    padding: 16,
+    marginBottom: 16,
+    backgroundColor: '#f8f9fa',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#e9ecef',
   },
   itemTitle: {
+    fontSize: 16,
     fontWeight: 'bold',
+    marginBottom: 8,
+    color: '#212529',
+  },
+  itemDetail: {
+    fontSize: 14,
+    marginBottom: 4,
+    color: '#495057',
+  },
+
+  legendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 8,
+    marginVertical: 4,
+  },
+  legendColor: {
+    width: 12,
+    height: 12,
+    marginRight: 4,
+    borderRadius: 2,
+  },
+  legendText: {
+    fontSize: 12,
+    color: '#495057',
+  },
+  noDataText: {
+    fontSize: 14,
+    color: '#6c757d',
+    fontStyle: 'italic',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 8,
+    fontSize: 14,
+    color: '#6c757d',
+  },
+  loadingFooter: {
+    padding: 16,
+    alignItems: 'center',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: {
+    fontSize: 16,
+    color: '#dc3545',
+    textAlign: 'center',
   },
 });
 
