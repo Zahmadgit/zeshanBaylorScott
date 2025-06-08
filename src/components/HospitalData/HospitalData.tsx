@@ -9,6 +9,7 @@ import {
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {setPage, addItems} from '../../store/paginationSlice';
 import {useGetHospitalDataQuery} from '../../api/hospitalApi';
+import {VictoryPie} from 'victory-pie';
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -41,12 +42,38 @@ const HospitalData = () => {
     }
   };
 
+  // Get the first hospital's data for the pie chart
+  const currentHospital = allItems[0];
+  const bedData = currentHospital
+    ? {
+        totalBeds: parseFloat(
+          currentHospital.all_adult_hospital_inpatient_beds_7_day_avg,
+        ),
+        unusedBeds:
+          parseFloat(
+            currentHospital.all_adult_hospital_inpatient_beds_7_day_avg,
+          ) -
+          parseFloat(
+            currentHospital.all_adult_hospital_inpatient_bed_occupied_7_day_avg,
+          ),
+        covidBeds: parseFloat(
+          currentHospital.inpatient_beds_used_covid_7_day_avg,
+        ),
+      }
+    : {
+        totalBeds: 0,
+        unusedBeds: 0,
+        covidBeds: 0,
+      };
+
   if (error) {
     return <Text>Error loading data</Text>;
   }
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Hospital Bed Distribution</Text>
+
       {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
       <FlatList
         data={allItems}
@@ -56,7 +83,6 @@ const HospitalData = () => {
             <Text style={styles.itemTitle}>{item.hospital_name}</Text>
             <Text>State: {item.state}</Text>
             <Text>Collection Date: {formatDate(item.collection_week)}</Text>
-
             <Text>
               Total Beds: {item.all_adult_hospital_inpatient_beds_7_day_avg}
             </Text>
@@ -64,6 +90,46 @@ const HospitalData = () => {
               Occupied Beds:{' '}
               {item.all_adult_hospital_inpatient_bed_occupied_7_day_avg}
             </Text>
+            <VictoryPie
+              data={[
+                {
+                  x: 'Occupied Beds',
+                  y: isNaN(
+                    parseFloat(
+                      item.all_adult_hospital_inpatient_bed_occupied_7_day_avg,
+                    ),
+                  )
+                    ? 0
+                    : parseFloat(
+                        item.all_adult_hospital_inpatient_bed_occupied_7_day_avg,
+                      ),
+                },
+                {
+                  x: 'Available Beds',
+                  y: isNaN(
+                    parseFloat(
+                      item.all_adult_hospital_inpatient_beds_7_day_avg,
+                    ) -
+                      parseFloat(
+                        item.all_adult_hospital_inpatient_bed_occupied_7_day_avg,
+                      ),
+                  )
+                    ? 0
+                    : parseFloat(
+                        item.all_adult_hospital_inpatient_beds_7_day_avg,
+                      ) -
+                      parseFloat(
+                        item.all_adult_hospital_inpatient_bed_occupied_7_day_avg,
+                      ),
+                },
+              ]}
+              colorScale={['#FF6384', '#36A2EB']}
+              innerRadius={50}
+              labelRadius={80}
+              style={{
+                labels: {fontSize: 14, fill: 'black'},
+              }}
+            />
           </View>
         )}
         onEndReached={handleLoadMore}
@@ -78,6 +144,13 @@ const HospitalData = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 16,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 16,
   },
   itemContainer: {
     padding: 10,
@@ -86,12 +159,6 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     fontWeight: 'bold',
-  },
-  chart: {
-    width: 200,
-    height: 200,
-    alignSelf: 'center',
-    marginVertical: 10,
   },
 });
 

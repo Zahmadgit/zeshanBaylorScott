@@ -23,7 +23,9 @@
     "react-native-web": "^0.20.0",
     "react-redux": "^9.2.0",
     "victory": "^37.3.6",
-    "victory-native": "^41.17.3"
+    "victory-native": "^41.17.3",
+    "victory-chart": "36.0.0",
+    "victory-pie": "36.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
