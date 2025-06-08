@@ -69,29 +69,53 @@ const HospitalData = ({navigation}: Props) => {
 
   return (
     <View style={styles.container}>
-      {isLoading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : error ? (
-        <Text>Error loading data: {error.message}</Text>
-      ) : (
-        <FlatList
-          data={allItems}
-          renderItem={({item}) => renderHospitalItem(item)}
-          keyExtractor={item => item.hospital_name}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.5}
-          ListFooterComponent={
-            isFetching ? (
-              <ActivityIndicator size="large" color="#0000ff" />
-            ) : null
-          }
-        />
-      )}
+      <View style={styles.contentContainer}>
+        {isLoading ? (
+          <View style={styles.centered}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        ) : error ? (
+          <Text style={styles.errorText}>Error loading data: {error.message}</Text>
+        ) : (
+          <FlatList
+            data={allItems}
+            renderItem={({item}) => renderHospitalItem(item)}
+            keyExtractor={item => item.hospital_name}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={
+              isFetching ? (
+                <View style={styles.centered}>
+                  <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+              ) : null
+            }
+            contentContainerStyle={styles.flatListContent}
+          />
+        )}
+      </View>
     </View>
+    
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  contentContainer: {
+    flex: 1,
+    padding: 16,
+  },
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  flatListContent: {
+    flexGrow: 1,
+    paddingVertical: 8,
+  },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
