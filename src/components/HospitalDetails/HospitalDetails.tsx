@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {Pie, PolarChart} from 'victory-native';
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
+import {PieChart} from 'react-native-chart-kit';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 type RootStackParamList = {
@@ -9,6 +9,8 @@ type RootStackParamList = {
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HospitalDetails'>;
+
+const screenWidth = Dimensions.get('window').width;
 
 const HospitalDetails = ({route}: Props) => {
   const {hospitalData} = route.params;
@@ -39,7 +41,10 @@ const HospitalDetails = ({route}: Props) => {
           </Text>
         </View>
         <View style={styles.chartContainer}>
-          <Text style={styles.noDataText}>No chart data available</Text>
+          <Text style={styles.noDataText}>
+            No chart data available
+            {'\n'}Total: {totalBeds}, Occupied: {occupiedBeds}
+          </Text>
         </View>
       </View>
     );
@@ -49,18 +54,34 @@ const HospitalDetails = ({route}: Props) => {
   const safeAvailableBeds = Math.max(0, availableBeds);
   const safeOccupiedBeds = Math.min(occupiedBeds, totalBeds);
 
-  const chartData = [
+  // Chart Kit data structure
+  const pieData = [
     {
-      value: safeOccupiedBeds,
+      name: 'Occupied',
+      population: safeOccupiedBeds,
       color: '#FF6384',
-      label: `Occupied: ${safeOccupiedBeds.toFixed(1)}`
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 15,
     },
     {
-      value: safeAvailableBeds,
+      name: 'Available',
+      population: safeAvailableBeds,
       color: '#36A2EB',
-      label: `Available: ${safeAvailableBeds.toFixed(1)}`
-    }
+      legendFontColor: '#7F7F7F',
+      legendFontSize: 15,
+    },
   ];
+
+  const chartConfig = {
+    backgroundGradientFrom: '#ffffff',
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: '#ffffff',
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+    strokeWidth: 2,
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false,
+  };
 
   return (
     <View style={styles.container}>
@@ -70,22 +91,47 @@ const HospitalDetails = ({route}: Props) => {
           {hospitalData.hospital_state}
         </Text>
       </View>
-      <View style={styles.chartContainer}>
-        <View style={{height: 200, width: 300, alignItems: 'center', justifyContent: 'center'}}>
-          <View style={{height: 300}}>
-            <PolarChart
-              data={chartData}
-              labelKey="label"
-              valueKey="value"
-              colorKey="color"
-            >
-              <Pie.Chart
-                innerRadius={50}
-                size={200}
-              />
-            </PolarChart>
-          </View>
+
+      {/* Display summary stats */}
+      <View style={styles.statsContainer}>
+        <View style={styles.statItem}>
+          <Text style={styles.statNumber}>{totalBeds.toFixed(0)}</Text>
+          <Text style={styles.statLabel}>Total Beds</Text>
         </View>
+        <View style={styles.statItem}>
+          <Text style={[styles.statNumber, {color: '#FF6384'}]}>
+            {safeOccupiedBeds.toFixed(0)}
+          </Text>
+          <Text style={styles.statLabel}>Occupied</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Text style={[styles.statNumber, {color: '#36A2EB'}]}>
+            {safeAvailableBeds.toFixed(0)}
+          </Text>
+          <Text style={styles.statLabel}>Available</Text>
+        </View>
+      </View>
+
+      <View style={styles.chartContainer}>
+        <Text style={styles.chartTitle}>Bed Occupancy</Text>
+        <PieChart
+          data={pieData}
+          width={screenWidth - 32}
+          height={220}
+          chartConfig={chartConfig}
+          accessor="population"
+          backgroundColor="transparent"
+          paddingLeft="15"
+          center={[10, 50]}
+          absolute
+        />
+      </View>
+
+      {/* Occupancy rate */}
+      <View style={styles.occupancyContainer}>
+        <Text style={styles.occupancyText}>
+          Occupancy Rate: {((safeOccupiedBeds / totalBeds) * 100).toFixed(1)}%
+        </Text>
       </View>
     </View>
   );
@@ -105,18 +151,58 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 8,
+    textAlign: 'center',
   },
   hospitalLocation: {
     fontSize: 16,
     color: '#666',
   },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 30,
+    paddingVertical: 20,
+    backgroundColor: '#f8f9fa',
+    borderRadius: 10,
+  },
+  statItem: {
+    alignItems: 'center',
+  },
+  statNumber: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  statLabel: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 4,
+  },
   chartContainer: {
     alignItems: 'center',
-    padding: 20,
+    marginBottom: 20,
+  },
+  chartTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    color: '#333',
+  },
+  occupancyContainer: {
+    alignItems: 'center',
+    padding: 15,
+    backgroundColor: '#e9ecef',
+    borderRadius: 8,
+  },
+  occupancyText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#495057',
   },
   noDataText: {
     fontSize: 16,
     color: '#666',
+    textAlign: 'center',
   },
   errorText: {
     fontSize: 16,

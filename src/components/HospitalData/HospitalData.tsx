@@ -10,7 +10,6 @@ import {
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {setPage, addItems} from '../../store/paginationSlice';
 import {useGetHospitalDataQuery} from '../../api/hospitalApi';
-import { Pie, PolarChart } from 'victory-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 type RootStackParamList = {
@@ -61,12 +60,12 @@ const HospitalData = ({navigation}: Props) => {
         }>
         <Text style={styles.itemTitle}>{item.hospital_name}</Text>
         <Text style={styles.itemDetail}>{item.hospital_state}</Text>
-        <Text style={styles.itemDetail}>Last Updated: {formatDate(item.collection_date)}</Text>
+        <Text style={styles.itemDetail}>
+          Last Updated: {formatDate(item.collection_date)}
+        </Text>
       </TouchableOpacity>
     );
   };
-
-
 
   return (
     <View style={styles.container}>
