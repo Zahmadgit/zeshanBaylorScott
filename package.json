@@ -12,11 +12,16 @@
   },
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
+    "@shopify/react-native-skia": "^2.0.3",
     "expo": "~53.0.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.3",
-    "react-native-web": "^0.20.0"
+    "react-native-gesture-handler": "^2.25.0",
+    "react-native-reanimated": "^3.18.0",
+    "react-native-web": "^0.20.0",
+    "victory": "^37.3.6",
+    "victory-native": "^41.17.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
