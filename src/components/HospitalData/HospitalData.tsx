@@ -21,6 +21,15 @@ type Props = NativeStackScreenProps<RootStackParamList, 'HospitalList'>;
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
+  if (isNaN(date.getTime())) {
+    // Try parsing as ISO string
+    const isoString = dateString.replace(/T.*/, ''); // Remove time part
+    return new Date(isoString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  }
   return date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -61,7 +70,7 @@ const HospitalData = ({navigation}: Props) => {
         <Text style={styles.itemTitle}>{item.hospital_name}</Text>
         <Text style={styles.itemDetail}>{item.hospital_state}</Text>
         <Text style={styles.itemDetail}>
-          Last Updated: {formatDate(item.collection_date)}
+          Last Updated: {formatDate(item.collection_week)}
         </Text>
       </TouchableOpacity>
     );
@@ -77,7 +86,7 @@ const HospitalData = ({navigation}: Props) => {
         <FlatList
           data={allItems}
           renderItem={({item}) => renderHospitalItem(item)}
-          keyExtractor={item => item.hospital_name}
+          keyExtractor={(_, index) => index.toString()}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
           ListFooterComponent={
