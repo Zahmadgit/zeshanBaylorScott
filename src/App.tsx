@@ -1,19 +1,14 @@
-
 import React from 'react';
 
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-} from 'react-native';
-
+import {SafeAreaView, StyleSheet, Text} from 'react-native';
+import HospitalData from './components/HospitalData/HospitalData';
 
 function App(): React.JSX.Element {
-
   return (
     <SafeAreaView style={styles.sectionContainer}>
       <Text>Yay its working</Text>
       <Text>BRUH WORKS</Text>
+      <HospitalData />
     </SafeAreaView>
   );
 }
