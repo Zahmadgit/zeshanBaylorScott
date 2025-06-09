@@ -1,15 +1,18 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
-Migrated over to Expo for easier integration of react native web
+# React Native + Expo Project
 
-# Getting Started
+This is a new [**React Native**](https://reactnative.dev) project, originally bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli) and later **migrated to Expo** for easier integration with **React Native Web**.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+---
+
+## Getting Started
+
+> **Note:** Before you begin, make sure you've completed the official [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide.
+
+---
 
 ## Step 1: Start Metro
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
-
-To start the Metro dev server, run the following command from the root of your React Native project:
+Metro is the JavaScript bundler for React Native. To start it, run the following command from your project root:
 
 ```sh
 # Using npm
@@ -19,47 +22,53 @@ npm start
 yarn start
 ```
 
-## Step 2: Build and run your app
+---
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+## Step 2: Build and Run Your App
 
-### Android
+With Metro running, open a new terminal and run one of the following depending on your platform:
+
+###  Android
 
 ```sh
-# Using npx
 npx expo run:android
+```
 
+This will build and launch the app on an Android device or emulator.
+
+---
 
 ### iOS
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+> **Note:** If you’re using Expo with bare workflow, **CocoaPods installation is automated**.
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
+If needed (e.g., when manually managing native dependencies), you can still do:
 
 ```sh
+bundle install         # Run once to install bundler
 bundle exec pod install
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+Then run the app:
 
 ```sh
-# Using npx
 npx expo run:ios
+```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+---
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+## Web
 
-### Web
+To run the app in the browser using React Native Web:
+
 ```sh
-# Using npx
 npx expo start --web
+```
 
+---
+
+If everything is set up correctly, your app should now be running on your emulator, simulator, device, or web browser.
+
+You can also open the project directly in **Android Studio** or **Xcode** if you prefer working in those environments.
 
 
