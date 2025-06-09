@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useAppDispatch, useAppSelector} from '../../../store/hooks';
-import {addFlaggedHospital, removeFlaggedHospital} from '../../../store/flaggedHospitalsSlice';
+import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
 
 type Props = {
   hospitalData: {
@@ -18,59 +18,100 @@ type Props = {
 
 const Header = ({hospitalData, navigation, toggleFlag, isFlagged}: Props) => {
   const dispatch = useAppDispatch();
-  const {flaggedHospitals} = useAppSelector((state) => state.flaggedHospitals);
+  const {flaggedHospitals} = useAppSelector(state => state.flaggedHospitals);
 
   const isFlaggedLocal = flaggedHospitals.some(
-    (h: any) => h.id === hospitalData.hospital_pk
+    (h: any) => h.id === hospitalData.hospital_pk,
   );
 
   return (
-    <View style={styles.header}>
-      <Text style={styles.hospitalName}>{hospitalData.hospital_name}</Text>
-      <Text style={styles.hospitalLocation}>{hospitalData.hospital_state}</Text>
-      <TouchableOpacity
-        style={[styles.flagButton, isFlaggedLocal && styles.flagButtonActive]}
-        onPress={() => {
-          toggleFlag();
-          
-        }}
-      >
-        <Text style={[styles.flagButtonText, isFlagged && styles.flagButtonTextActive]}>
-          {isFlagged ? 'Currently Flagged' : 'Flag'}
-        </Text>
-      </TouchableOpacity>
+    <View
+      style={styles.header}
+      accessible={true}
+      accessibilityLabel={`Hospital header for ${hospitalData.hospital_name}`}
+      accessibilityHint="Shows hospital name and location">
+      <View style={styles.headerContent}>
+        <View style={styles.titleContainer}>
+          <Text
+            style={styles.hospitalName}
+            accessibilityLabel={`Hospital name: ${hospitalData.hospital_name}`}
+            numberOfLines={2}
+            adjustsFontSizeToFit>
+            {hospitalData.hospital_name}
+          </Text>
+          <Text
+            style={styles.hospitalLocation}
+            accessibilityLabel={`Location: ${hospitalData.hospital_state}`}
+            numberOfLines={1}
+            adjustsFontSizeToFit>
+            {hospitalData.hospital_state}
+          </Text>
+        </View>
+        <TouchableOpacity
+          style={[styles.flagButton, isFlaggedLocal && styles.flagButtonActive]}
+          onPress={() => {
+            toggleFlag();
+          }}
+          accessible={true}
+          accessibilityLabel={
+            isFlagged ? 'Currently flagged hospital' : 'Flag this hospital'
+          }
+          accessibilityHint="Double tap to toggle flag status"
+          accessibilityState={{selected: isFlagged}}>
+          <Text
+            style={[
+              styles.flagButtonText,
+              isFlagged && styles.flagButtonTextActive,
+            ]}
+            numberOfLines={1}
+            adjustsFontSizeToFit>
+            {isFlagged ? 'Currently Flagged' : 'Flag'}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   header: {
-    padding: 16,
     backgroundColor: '#fff',
-    borderBottomWidth: 1,
+    borderBottomWidth: scale(1),
     borderBottomColor: '#eee',
   },
+  headerContent: {
+    padding: moderateScale(16),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  titleContainer: {
+    flex: 1,
+    marginRight: scale(16),
+  },
   hospitalName: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: verticalScale(8),
+    flexWrap: 'wrap',
   },
   hospitalLocation: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     color: '#666',
   },
   flagButton: {
-    marginTop: 16,
-    padding: 12,
-    borderRadius: 8,
+    padding: moderateScale(12),
+    borderRadius: scale(8),
     backgroundColor: '#f0f0f0',
+    minWidth: scale(100),
+    alignItems: 'center',
   },
   flagButtonActive: {
     backgroundColor: '#4CAF50',
   },
   flagButtonText: {
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: moderateScale(16),
     color: '#333',
   },
   flagButtonTextActive: {

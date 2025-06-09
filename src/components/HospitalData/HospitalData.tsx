@@ -12,6 +12,7 @@ import {setPage, addItems} from '../../store/paginationSlice';
 import {useGetHospitalDataQuery} from '../../api/hospitalApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import DateFormatter from '../../helpers/DateFormatter';
+import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
 
 type RootStackParamList = {
   HospitalList: undefined;
@@ -49,7 +50,10 @@ const HospitalData = ({navigation}: Props) => {
         style={styles.itemContainer}
         onPress={() =>
           navigation.navigate('HospitalDetails', {hospitalData: item})
-        }>
+        }
+        accessible={true}
+        accessibilityLabel={`Hospital ${item.hospital_name} in ${item.hospital_state}`}
+        accessibilityHint="Double tap to view detailed information about this hospital">
         <Text style={styles.itemTitle}>{item.hospital_name}</Text>
         <Text style={styles.itemDetail}>{item.hospital_state}</Text>
         <Text style={styles.itemDetail}>
@@ -60,11 +64,14 @@ const HospitalData = ({navigation}: Props) => {
   };
 
   return (
-    <View>
+    <View accessible={true} accessibilityLabel="Hospital List">
       {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : error ? (
-        <Text>Error loading data: {error instanceof Error ? error.message : 'An error occurred'}</Text>
+        <Text style={styles.errorText} accessibilityLabel="Error loading data">
+          Error loading data:{' '}
+          {error instanceof Error ? error.message : 'An error occurred'}
+        </Text>
       ) : (
         <FlatList
           data={allItems}
@@ -72,6 +79,8 @@ const HospitalData = ({navigation}: Props) => {
           keyExtractor={(_, index) => index.toString()}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
+          accessibilityLabel="List of hospitals"
+          accessibilityHint="Scroll through the list of hospitals"
           ListFooterComponent={
             isFetching ? (
               <ActivityIndicator size="large" color="#0000ff" />
@@ -85,49 +94,49 @@ const HospitalData = ({navigation}: Props) => {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 16,
+    marginBottom: verticalScale(16),
   },
   itemContainer: {
-    padding: 16,
-    marginBottom: 16,
+    padding: moderateScale(16),
+    marginBottom: verticalScale(16),
     backgroundColor: '#f8f9fa',
-    borderRadius: 8,
-    borderWidth: 1,
+    borderRadius: scale(8),
+    borderWidth: scale(1),
     borderColor: '#e9ecef',
   },
   itemTitle: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: verticalScale(8),
     color: '#212529',
   },
   itemDetail: {
-    fontSize: 14,
-    marginBottom: 4,
+    fontSize: moderateScale(14),
+    marginBottom: verticalScale(4),
     color: '#495057',
   },
 
   legendItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 8,
-    marginVertical: 4,
+    marginHorizontal: scale(8),
+    marginVertical: verticalScale(4),
   },
   legendColor: {
-    width: 12,
-    height: 12,
-    marginRight: 4,
-    borderRadius: 2,
+    width: scale(12),
+    height: scale(12),
+    marginRight: scale(4),
+    borderRadius: scale(2),
   },
   legendText: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     color: '#495057',
   },
   noDataText: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#6c757d',
     fontStyle: 'italic',
   },
@@ -137,12 +146,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    marginTop: 8,
-    fontSize: 14,
+    marginTop: verticalScale(8),
+    fontSize: moderateScale(14),
     color: '#6c757d',
   },
   loadingFooter: {
-    padding: 16,
+    padding: moderateScale(16),
     alignItems: 'center',
   },
   errorContainer: {
@@ -151,7 +160,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   errorText: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     color: '#dc3545',
     textAlign: 'center',
   },

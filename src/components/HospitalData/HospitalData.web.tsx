@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, {useEffect, useRef, useCallback} from 'react';
 import styled from 'styled-components';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setPage, addItems } from '../../store/paginationSlice';
-import { useGetHospitalDataQuery } from '../../api/hospitalApi';
+import {useAppDispatch, useAppSelector} from '../../store/hooks';
+import {setPage, addItems} from '../../store/paginationSlice';
+import {useGetHospitalDataQuery} from '../../api/hospitalApi';
 import DateFormatter from '../../helpers/DateFormatter';
 
 interface Hospital {
@@ -15,13 +15,13 @@ interface Props {
   navigation: any;
 }
 
-const HospitalData = ({ navigation }: Props) => {
+const HospitalData = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
-  const { currentPage, itemsPerPage, allItems } = useAppSelector(
+  const {currentPage, itemsPerPage, allItems} = useAppSelector(
     state => state.pagination,
   );
 
-  const { data, isLoading, isFetching, error } = useGetHospitalDataQuery({
+  const {data, isLoading, isFetching, error} = useGetHospitalDataQuery({
     limit: itemsPerPage,
     offset: (currentPage - 1) * itemsPerPage,
   });
@@ -45,7 +45,7 @@ const HospitalData = ({ navigation }: Props) => {
     if (!element) return;
 
     const handleScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = element;
+      const {scrollTop, scrollHeight, clientHeight} = element;
       const threshold = 0.1;
       const isNearBottom =
         scrollTop + clientHeight >= scrollHeight * (1 - threshold);
@@ -63,9 +63,8 @@ const HospitalData = ({ navigation }: Props) => {
     (item: Hospital) => (
       <ItemContainer
         onClick={() =>
-          navigation.navigate('HospitalDetails', { hospitalData: item })
-        }
-      >
+          navigation.navigate('HospitalDetails', {hospitalData: item})
+        }>
         <ItemTitle>{item.hospital_name}</ItemTitle>
         <ItemDetail>{item.hospital_state}</ItemDetail>
         <ItemDetail>
