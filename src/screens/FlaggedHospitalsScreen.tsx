@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, SafeAreaView} from 'react-native';
+import {StyleSheet, SafeAreaView} from 'react-native';
 import FlaggedHospitals from '../components/FlaggedHospitals/FlaggedHospitals';
 
 const FlaggedHospitalsScreen = () => {

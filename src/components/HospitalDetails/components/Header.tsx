@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {useAppDispatch, useAppSelector} from '../../../store/hooks';
+import {useAppSelector} from '../../../store/hooks';
 import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
 
 type Props = {
@@ -16,8 +16,7 @@ type Props = {
   isFlagged: boolean;
 };
 
-const Header = ({hospitalData, navigation, toggleFlag, isFlagged}: Props) => {
-  const dispatch = useAppDispatch();
+const Header = ({hospitalData, toggleFlag, isFlagged}: Props) => {
   const {flaggedHospitals} = useAppSelector(state => state.flaggedHospitals);
 
   // Check if this hospital is flagged in local state

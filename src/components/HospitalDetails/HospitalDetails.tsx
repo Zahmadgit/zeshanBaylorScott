@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Platform,
-  Dimensions,
-} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Platform} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {
@@ -17,7 +10,7 @@ import Header from './components/Header';
 import Stats from './components/Stats';
 import Chart from './components/Chart';
 import Occupancy from './components/Occupancy';
-import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
+import {moderateScale, verticalScale} from 'react-native-size-matters';
 
 const isWeb = Platform.OS === 'web';
 const maxContentWidth = 1200; // Maximum width for web content

@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, Platform} from 'react-native';
-import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
+import {scale, moderateScale} from 'react-native-size-matters';
 
 const isWeb = Platform.OS === 'web';
 

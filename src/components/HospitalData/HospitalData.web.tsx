@@ -47,7 +47,9 @@ const HospitalData = ({navigation}: Props) => {
   // Setup scroll listener to load more when you're near the bottom
   useEffect(() => {
     const element = scrollRef.current;
-    if (!element) return;
+    if (!element) {
+      return;
+    }
 
     const handleScroll = () => {
       const {scrollTop, scrollHeight, clientHeight} = element;

@@ -28,7 +28,7 @@ const Stats = ({totalBeds, occupiedBeds, availableBeds}: Props) => {
         style={styles.statItem}
         accessible={true}
         accessibilityLabel={`Occupied beds: ${occupiedBeds.toFixed(0)}`}>
-        <Text style={[styles.statNumber, {color: 'red'}]}>
+        <Text style={[styles.statNumber, styles.statNumberOccupied]}>
           {occupiedBeds.toFixed(0)}
         </Text>
         <Text style={styles.statLabel}>Occupied</Text>
@@ -37,7 +37,7 @@ const Stats = ({totalBeds, occupiedBeds, availableBeds}: Props) => {
         style={styles.statItem}
         accessible={true}
         accessibilityLabel={`Available beds: ${availableBeds.toFixed(0)}`}>
-        <Text style={[styles.statNumber, {color: 'blue'}]}>
+        <Text style={styles.statNumberAvailable}>
           {availableBeds.toFixed(0)}
         </Text>
         <Text style={styles.statLabel}>Available</Text>
@@ -71,6 +71,15 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(16),
     color: 'gray',
     textAlign: 'center',
+  },
+  statNumberOccupied: {
+    color: 'red',
+  },
+  statNumberAvailable: {
+    fontSize: moderateScale(24),
+    fontWeight: 'bold',
+    marginBottom: verticalScale(4),
+    color: 'blue',
   },
 });
 

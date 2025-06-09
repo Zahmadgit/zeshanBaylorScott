@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import HospitalData from '../components/HospitalData/HospitalData';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
