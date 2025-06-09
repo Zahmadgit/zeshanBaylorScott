@@ -13,14 +13,12 @@ const Occupancy = ({totalBeds, occupiedBeds}: Props) => {
   const occupancyRate = ((occupiedBeds / totalBeds) * 100).toFixed(1);
 
   return (
-    <View 
+    <View
       style={styles.occupancyContainer}
       accessible={true}
       accessibilityLabel={`Current occupancy rate: ${occupancyRate}%`}
       accessibilityHint="Shows the percentage of beds currently occupied">
-      <Text style={styles.occupancyText}>
-        Occupancy Rate: {occupancyRate}%
-      </Text>
+      <Text style={styles.occupancyText}>Occupancy Rate: {occupancyRate}%</Text>
     </View>
   );
 };
@@ -28,6 +26,8 @@ const Occupancy = ({totalBeds, occupiedBeds}: Props) => {
 const styles = StyleSheet.create({
   occupancyContainer: {
     padding: moderateScale(16),
+    borderWidth: 1,
+    borderColor: 'lightgray',
     backgroundColor: 'white',
     borderRadius: scale(8),
     alignItems: 'center',

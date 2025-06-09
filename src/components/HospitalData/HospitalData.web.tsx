@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, {useEffect, useRef, useCallback} from 'react';
 import styled from 'styled-components';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setPage, addItems } from '../../store/paginationSlice';
-import { useGetHospitalDataQuery } from '../../api/hospitalApi';
+import {useAppDispatch, useAppSelector} from '../../store/hooks';
+import {setPage, addItems} from '../../store/paginationSlice';
+import {useGetHospitalDataQuery} from '../../api/hospitalApi';
 import DateFormatter from '../../helpers/DateFormatter';
-
 
 interface Hospital {
   hospital_name: string;
@@ -16,14 +15,14 @@ interface Props {
   navigation: any;
 }
 
-const HospitalData = ({ navigation }: Props) => {
+const HospitalData = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
-  const { currentPage, itemsPerPage, allItems } = useAppSelector(
-    state => state.pagination
+  const {currentPage, itemsPerPage, allItems} = useAppSelector(
+    state => state.pagination,
   );
 
   // Fetch data using RTK Query, passing current pagination info
-  const { data, isLoading, isFetching, error } = useGetHospitalDataQuery({
+  const {data, isLoading, isFetching, error} = useGetHospitalDataQuery({
     limit: itemsPerPage,
     offset: (currentPage - 1) * itemsPerPage,
   });
@@ -51,7 +50,7 @@ const HospitalData = ({ navigation }: Props) => {
     if (!element) return;
 
     const handleScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = element;
+      const {scrollTop, scrollHeight, clientHeight} = element;
       const threshold = 0.1;
       const isNearBottom =
         scrollTop + clientHeight >= scrollHeight * (1 - threshold);
@@ -72,7 +71,7 @@ const HospitalData = ({ navigation }: Props) => {
     (item: Hospital) => (
       <ItemContainer
         onClick={() =>
-          navigation.navigate('HospitalDetails', { hospitalData: item })
+          navigation.navigate('HospitalDetails', {hospitalData: item})
         }>
         <ItemTitle>{item.hospital_name}</ItemTitle>
         <ItemDetail>{item.hospital_state}</ItemDetail>
@@ -81,7 +80,7 @@ const HospitalData = ({ navigation }: Props) => {
         </ItemDetail>
       </ItemContainer>
     ),
-    [navigation]
+    [navigation],
   );
 
   return (
@@ -126,7 +125,7 @@ const Container = styled.div`
   overflow-y: auto;
   padding: 16px;
   box-sizing: border-box;
-  background-color: lightgray;
+  background-color: white;
 `;
 
 const Loading = styled.div`
@@ -161,7 +160,7 @@ const ItemContainer = styled.div`
   background-color: lightgray;
   padding: 16px;
   border-radius: 8px;
-  border: 1px solid lightgray;
+  border: 1px solid gray;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.2s;
 

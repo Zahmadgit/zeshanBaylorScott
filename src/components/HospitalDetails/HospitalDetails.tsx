@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView, Platform, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Platform,
+  Dimensions,
+} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {
@@ -28,7 +35,6 @@ const HospitalDetails = ({route, navigation}: Props) => {
   const {hospitalData} = route.params;
   const dispatch = useAppDispatch();
   const {flaggedHospitals} = useAppSelector(state => state.flaggedHospitals);
-
 
   // Check if this hospital is already flagged
   const isFlagged = flaggedHospitals.some(
@@ -125,7 +131,9 @@ const HospitalDetails = ({route, navigation}: Props) => {
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
       accessible={true}
-      accessibilityLabel={`Hospital details for ${hospitalData?.hospital_name || 'Unknown'}`}
+      accessibilityLabel={`Hospital details for ${
+        hospitalData?.hospital_name || 'Unknown'
+      }`}
       accessibilityHint="Shows detailed information about the selected hospital">
       <View style={styles.contentWrapper}>{renderContent()}</View>
     </ScrollView>

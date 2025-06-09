@@ -1,5 +1,5 @@
 import React from 'react';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import NavigationScreen from '../screens/NavigationScreen';
 import FlaggedHospitalsScreen from '../screens/FlaggedHospitalsScreen';
 
@@ -10,19 +10,18 @@ type TabParamList = {
 
 const Tab = createMaterialTopTabNavigator<TabParamList>();
 
-const TopTabNavigator = () =>{
+const TopTabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
         tabBarActiveTintColor: 'green',
         tabBarInactiveTintColor: 'gray',
-      }}
-    >
+      }}>
       <Tab.Screen
         name="Hospitals"
         component={NavigationScreen}
         options={{
-          tabBarLabel: 'Hospitals', 
+          tabBarLabel: 'Hospitals',
         }}
       />
       <Tab.Screen
@@ -34,6 +33,6 @@ const TopTabNavigator = () =>{
       />
     </Tab.Navigator>
   );
-}
+};
 
 export default TopTabNavigator;

@@ -1,10 +1,10 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { Provider } from 'react-redux';
-import { store } from './store/store';
+import {NavigationContainer} from '@react-navigation/native';
+import {Provider} from 'react-redux';
+import {store} from './store/store';
 import PlatformNavigation from './navigation/PlatformNavigation';
 
-const App =() =>{
+const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -12,6 +12,6 @@ const App =() =>{
       </NavigationContainer>
     </Provider>
   );
-}
+};
 
 export default App;

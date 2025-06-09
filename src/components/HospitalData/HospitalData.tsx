@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {
   FlatList,
   View,
@@ -7,34 +7,30 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setPage, addItems } from '../../store/paginationSlice';
-import { useGetHospitalDataQuery } from '../../api/hospitalApi';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {useAppDispatch, useAppSelector} from '../../store/hooks';
+import {setPage, addItems} from '../../store/paginationSlice';
+import {useGetHospitalDataQuery} from '../../api/hospitalApi';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import DateFormatter from '../../helpers/DateFormatter';
-import {
-  scale,
-  moderateScale,
-  verticalScale,
-} from 'react-native-size-matters';
+import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
 
 // Stack navigation type definitions
 type RootStackParamList = {
   HospitalList: undefined;
-  HospitalDetails: { hospitalData: any };
+  HospitalDetails: {hospitalData: any};
   FlaggedHospitals: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HospitalList'>;
 
-const HospitalData = ({ navigation }: Props) => {
+const HospitalData = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
-  const { currentPage, itemsPerPage, allItems } = useAppSelector(
+  const {currentPage, itemsPerPage, allItems} = useAppSelector(
     state => state.pagination,
   );
 
   // Fetch hospital data using the current pagination values
-  const { data, isLoading, isFetching, error } = useGetHospitalDataQuery({
+  const {data, isLoading, isFetching, error} = useGetHospitalDataQuery({
     limit: itemsPerPage,
     offset: (currentPage - 1) * itemsPerPage,
   });
@@ -55,16 +51,15 @@ const HospitalData = ({ navigation }: Props) => {
 
   // Render each hospital item in the list
   const renderHospitalItem = useCallback(
-    ({ item }: { item: any }) => (
+    ({item}: {item: any}) => (
       <TouchableOpacity
         style={styles.itemContainer}
         onPress={() =>
-          navigation.navigate('HospitalDetails', { hospitalData: item })
+          navigation.navigate('HospitalDetails', {hospitalData: item})
         }
         accessible={true}
         accessibilityLabel={`Hospital ${item.hospital_name} in ${item.hospital_state}`}
-        accessibilityHint="Double tap to view detailed information about this hospital"
-      >
+        accessibilityHint="Double tap to view detailed information about this hospital">
         <Text style={styles.itemTitle}>{item.hospital_name}</Text>
         <Text style={styles.itemDetail}>{item.hospital_state}</Text>
         <Text style={styles.itemDetail}>
@@ -103,8 +98,7 @@ const HospitalData = ({ navigation }: Props) => {
     <View
       accessible={true}
       accessibilityLabel="Hospital List"
-      style={{ flex: 1 }}
-    >
+      style={styles.container}>
       <FlatList
         data={allItems}
         renderItem={renderHospitalItem}
@@ -131,13 +125,17 @@ const HospitalData = ({ navigation }: Props) => {
 
 // Styling - using scale utils for responsive UI, specifically for mobile
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   itemContainer: {
     padding: moderateScale(16),
     marginBottom: verticalScale(16),
     backgroundColor: 'lightgray',
     borderRadius: scale(8),
     borderWidth: scale(1),
-    borderColor: 'lightgray',
+    borderColor: 'gray',
+    margin: moderateScale(10),
   },
   itemTitle: {
     fontSize: moderateScale(16),

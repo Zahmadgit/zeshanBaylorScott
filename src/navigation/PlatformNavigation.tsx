@@ -1,6 +1,6 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {Platform} from 'react-native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BottomTabNavigator from './TabNavigator';
 import TopTabNavigator from './TopTabNavigator';
 
@@ -24,7 +24,7 @@ const PlatformNavigation = () => {
 
   return (
     // Setup the stack navigator without headers, rendering the platform-specific tabs
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
     </Stack.Navigator>
   );

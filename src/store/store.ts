@@ -1,6 +1,6 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {configureStore} from '@reduxjs/toolkit';
 import paginationReducer from './paginationSlice';
-import { hospitalApi } from '../api/hospitalApi';
+import {hospitalApi} from '../api/hospitalApi';
 import flaggedHospitalsReducer from './flaggedHospitalsSlice';
 
 export const store = configureStore({
@@ -13,7 +13,7 @@ export const store = configureStore({
     flaggedHospitals: flaggedHospitalsReducer,
   },
   // Add the RTK Query middleware for caching, fetching, what is fetch and axios anyways, tanstack who?.
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(hospitalApi.middleware),
 });
 

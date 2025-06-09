@@ -49,21 +49,19 @@ const Chart = ({totalBeds, occupiedBeds}: Props) => {
   };
 
   // Handle responsive width and height, limit max width on web
-  const chartWidth = isWeb 
+  const chartWidth = isWeb
     ? Math.min(screenWidth - scale(64), 500)
     : screenWidth - scale(32);
 
   const chartHeight = isWeb ? 300 : 200;
 
   return (
-    <View 
+    <View
       style={styles.chartContainer}
       accessible={true}
       accessibilityLabel="Bed occupancy chart"
       accessibilityHint="Shows the distribution of occupied and available beds">
-      <Text 
-        style={styles.chartTitle}
-        accessibilityLabel="Bed Occupancy Chart">
+      <Text style={styles.chartTitle} accessibilityLabel="Bed Occupancy Chart">
         Bed Occupancy
       </Text>
 
@@ -75,7 +73,7 @@ const Chart = ({totalBeds, occupiedBeds}: Props) => {
           chartConfig={chartConfig}
           accessor="population"
           backgroundColor="transparent"
-          paddingLeft={isWeb ? "0" : "15"}
+          paddingLeft={isWeb ? '0' : '15'}
           absolute // Shows exact numbers instead of percentages
         />
       </View>
@@ -86,6 +84,8 @@ const Chart = ({totalBeds, occupiedBeds}: Props) => {
 // Styles for the chart container and layout
 const styles = StyleSheet.create({
   chartContainer: {
+    borderColor: 'lightgray',
+    borderWidth: 1,
     padding: moderateScale(16),
     alignItems: 'center',
     backgroundColor: 'white',

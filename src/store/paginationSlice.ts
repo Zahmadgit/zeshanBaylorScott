@@ -1,6 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-
 // Define what our pagination state looks like
 interface PaginationState {
   currentPage: number;
@@ -40,6 +39,11 @@ const paginationSlice = createSlice({
   },
 });
 
-export const { setPage, setItemsPerPage, setTotalItems, addItems, resetPagination } =
-  paginationSlice.actions;
+export const {
+  setPage,
+  setItemsPerPage,
+  setTotalItems,
+  addItems,
+  resetPagination,
+} = paginationSlice.actions;
 export default paginationSlice.reducer;
