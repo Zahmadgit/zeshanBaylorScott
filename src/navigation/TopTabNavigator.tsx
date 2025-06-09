@@ -10,7 +10,7 @@ type TabParamList = {
 
 const Tab = createMaterialTopTabNavigator<TabParamList>();
 
-export default function TopTabNavigator() {
+const TopTabNavigator = () =>{
   return (
     <Tab.Navigator
       screenOptions={{
@@ -35,3 +35,5 @@ export default function TopTabNavigator() {
     </Tab.Navigator>
   );
 }
+
+export default TopTabNavigator;

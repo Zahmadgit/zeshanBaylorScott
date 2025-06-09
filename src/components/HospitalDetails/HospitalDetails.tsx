@@ -16,8 +16,6 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HospitalDetails'>;
 
-const screenWidth = Dimensions.get('window').width;
-
 const HospitalDetails = ({route, navigation}: Props) => {
   const {hospitalData} = route.params;
   const dispatch = useAppDispatch();

@@ -10,7 +10,7 @@ type TabParamList = {
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
-export default function TabNavigator() {
+const TabNavigator = () =>{
   return (
     <Tab.Navigator
       screenOptions={{
@@ -35,3 +35,4 @@ export default function TabNavigator() {
     </Tab.Navigator>
   );
 }
+ export default TabNavigator;

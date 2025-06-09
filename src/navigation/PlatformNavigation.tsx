@@ -12,7 +12,7 @@ type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function PlatformNavigation() {
+const PlatformNavigation = ()=> {
   const TabNavigator = Platform.select({
     web: TopTabNavigator,
     default: BottomTabNavigator,
@@ -24,3 +24,5 @@ export default function PlatformNavigation() {
     </Stack.Navigator>
   );
 }
+
+export default PlatformNavigation;

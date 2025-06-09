@@ -1,7 +1,8 @@
-import React, {useEffect, useRef, useCallback} from 'react';
-import {useAppDispatch, useAppSelector} from '../../store/hooks';
-import {setPage, addItems} from '../../store/paginationSlice';
-import {useGetHospitalDataQuery} from '../../api/hospitalApi';
+import React, { useEffect, useRef, useCallback } from 'react';
+import styled from 'styled-components';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { setPage, addItems } from '../../store/paginationSlice';
+import { useGetHospitalDataQuery } from '../../api/hospitalApi';
 import DateFormatter from '../../helpers/DateFormatter';
 
 interface Hospital {
@@ -14,13 +15,13 @@ interface Props {
   navigation: any;
 }
 
-const HospitalData = ({navigation}: Props) => {
+const HospitalData = ({ navigation }: Props) => {
   const dispatch = useAppDispatch();
-  const {currentPage, itemsPerPage, allItems} = useAppSelector(
+  const { currentPage, itemsPerPage, allItems } = useAppSelector(
     state => state.pagination,
   );
 
-  const {data, isLoading, isFetching, error} = useGetHospitalDataQuery({
+  const { data, isLoading, isFetching, error } = useGetHospitalDataQuery({
     limit: itemsPerPage,
     offset: (currentPage - 1) * itemsPerPage,
   });
@@ -44,7 +45,7 @@ const HospitalData = ({navigation}: Props) => {
     if (!element) return;
 
     const handleScroll = () => {
-      const {scrollTop, scrollHeight, clientHeight} = element;
+      const { scrollTop, scrollHeight, clientHeight } = element;
       const threshold = 0.1;
       const isNearBottom =
         scrollTop + clientHeight >= scrollHeight * (1 - threshold);
@@ -60,100 +61,112 @@ const HospitalData = ({navigation}: Props) => {
 
   const renderHospitalItem = useCallback(
     (item: Hospital) => (
-      <div
-        style={styles.itemContainer}
+      <ItemContainer
         onClick={() =>
-          navigation.navigate('HospitalDetails', {hospitalData: item})
-        }>
-        <div style={styles.itemTitle}>{item.hospital_name}</div>
-        <div style={styles.itemDetail}>{item.hospital_state}</div>
-        <div style={styles.itemDetail}>
+          navigation.navigate('HospitalDetails', { hospitalData: item })
+        }
+      >
+        <ItemTitle>{item.hospital_name}</ItemTitle>
+        <ItemDetail>{item.hospital_state}</ItemDetail>
+        <ItemDetail>
           Last Updated: {DateFormatter(item.collection_week)}
-        </div>
-      </div>
+        </ItemDetail>
+      </ItemContainer>
     ),
     [navigation],
   );
 
   return (
-    <div ref={scrollRef} style={styles.container}>
+    <Container ref={scrollRef}>
       {isLoading ? (
-        <div style={styles.loading}>
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
+        <Loading>
+          <div>
+            <span>Loading...</span>
           </div>
-        </div>
+        </Loading>
       ) : error ? (
-        <div style={styles.error}>
+        <ErrorBox>
           <div>Error loading data: {error?.message || 'An error occurred'}</div>
-        </div>
+        </ErrorBox>
       ) : (
-        <div style={styles.list}>
+        <List>
           {allItems.map((item: Hospital, index: number) => (
-            <div key={index} style={styles.itemWrapper}>
-              {renderHospitalItem(item)}
-            </div>
+            <ItemWrapper key={index}>{renderHospitalItem(item)}</ItemWrapper>
           ))}
           {isFetching && (
-            <div style={styles.loading}>
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
+            <Loading>
+              <div>
+                <span>Loading...</span>
               </div>
-            </div>
+            </Loading>
           )}
-        </div>
+        </List>
       )}
-    </div>
+    </Container>
   );
 };
 
-const styles = {
-  container: {
-    height: '100vh',
-    overflowY: 'auto',
-    padding: '16px',
-    boxSizing: 'border-box',
-  },
-  loading: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '20px',
-  },
-  error: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '20px',
-    color: '#dc3545',
-  },
-  list: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '16px',
-  },
-  itemWrapper: {
-    width: '100%',
-  },
-  itemContainer: {
-    backgroundColor: '#f8f9fa',
-    padding: '16px',
-    borderRadius: '8px',
-    border: '1px solid #e9ecef',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s',
-  },
-  itemTitle: {
-    fontSize: '16px',
-    fontWeight: 'bold',
-    marginBottom: '8px',
-    color: '#212529',
-  },
-  itemDetail: {
-    fontSize: '14px',
-    marginBottom: '4px',
-    color: '#495057',
-  },
-};
-
 export default HospitalData;
+
+const Container = styled.div`
+  height: 100vh;
+  overflow-y: auto;
+  padding: 16px;
+  box-sizing: border-box;
+  background-color: #f1f3f5;
+`;
+
+const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+`;
+
+const ErrorBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  color: #dc3545;
+  background-color: #ffe3e3;
+  border-radius: 8px;
+  font-weight: 500;
+`;
+
+const List = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const ItemWrapper = styled.div`
+  width: 100%;
+`;
+
+const ItemContainer = styled.div`
+  background-color: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+
+  &:hover {
+    background-color: #e9ecef;
+    transform: scale(1.01);
+  }
+`;
+
+const ItemTitle = styled.div`
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #212529;
+`;
+
+const ItemDetail = styled.div`
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: #495057;
+`;

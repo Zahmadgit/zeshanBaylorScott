@@ -60,11 +60,11 @@ const HospitalData = ({navigation}: Props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : error ? (
-        <Text>Error loading data: {error.message}</Text>
+        <Text>Error loading data: {error instanceof Error ? error.message : 'An error occurred'}</Text>
       ) : (
         <FlatList
           data={allItems}

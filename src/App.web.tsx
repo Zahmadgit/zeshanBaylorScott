@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 import PlatformNavigation from './navigation/PlatformNavigation';
 
-export default function App() {
+const App =() =>{
   return (
     <Provider store={store}>
       <NavigationContainer>

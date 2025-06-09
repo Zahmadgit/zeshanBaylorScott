@@ -11,6 +11,7 @@ type Props = {
 
 const Chart = ({totalBeds, occupiedBeds}: Props) => {
   const availableBeds = totalBeds - occupiedBeds;
+  //avoid rounding to nearest decimal chart legend data, pie chart wont display
   const safeAvailableBeds = Math.max(0, availableBeds);
   const safeOccupiedBeds = Math.min(occupiedBeds, totalBeds);
 
@@ -48,12 +49,11 @@ const Chart = ({totalBeds, occupiedBeds}: Props) => {
       <PieChart
         data={pieData}
         width={screenWidth - 32}
-        height={220}
+        height={200}
         chartConfig={chartConfig}
         accessor="population"
         backgroundColor="transparent"
         paddingLeft="15"
-        center={[10, 50]}
         absolute
       />
     </View>
