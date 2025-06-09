@@ -20,6 +20,7 @@ const Header = ({hospitalData, navigation, toggleFlag, isFlagged}: Props) => {
   const dispatch = useAppDispatch();
   const {flaggedHospitals} = useAppSelector(state => state.flaggedHospitals);
 
+  // Check if this hospital is flagged in local state
   const isFlaggedLocal = flaggedHospitals.some(
     (h: any) => h.id === hospitalData.hospital_pk,
   );
@@ -47,6 +48,7 @@ const Header = ({hospitalData, navigation, toggleFlag, isFlagged}: Props) => {
             {hospitalData.hospital_state}
           </Text>
         </View>
+
         <TouchableOpacity
           style={[styles.flagButton, isFlaggedLocal && styles.flagButtonActive]}
           onPress={() => {
@@ -73,11 +75,12 @@ const Header = ({hospitalData, navigation, toggleFlag, isFlagged}: Props) => {
   );
 };
 
+// Styles for the header layout and components
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     borderBottomWidth: scale(1),
-    borderBottomColor: '#eee',
+    borderBottomColor: 'lightgray',
   },
   headerContent: {
     padding: moderateScale(16),
@@ -97,26 +100,26 @@ const styles = StyleSheet.create({
   },
   hospitalLocation: {
     fontSize: moderateScale(16),
-    color: '#666',
+    color: 'gray',
   },
   flagButton: {
     padding: moderateScale(12),
     borderRadius: scale(8),
-    backgroundColor: '#f0f0f0',
+    backgroundColor: 'lightgray',
     minWidth: scale(100),
     alignItems: 'center',
   },
   flagButtonActive: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: 'green',
   },
   flagButtonText: {
     textAlign: 'center',
     fontSize: moderateScale(16),
-    color: '#333',
+    color: 'black',
   },
   flagButtonTextActive: {
-    color: '#fff',
+    color: 'white',
   },
 });
 
-export default Header;
+export default React.memo(Header);

@@ -17,6 +17,7 @@ const NavigationScreen = () => {
         name="HospitalDetails"
         component={HospitalDetails}
         options={({ route }) => ({
+          // Dynamically set the header title using hospital name, flashy~
           title: route.params?.hospitalData?.hospital_name || 'Hospital Details',
         })}
       />

@@ -14,8 +14,8 @@ const TopTabNavigator = () =>{
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: '#4CAF50',
-        tabBarInactiveTintColor: '#666',
+        tabBarActiveTintColor: 'green',
+        tabBarInactiveTintColor: 'gray',
       }}
     >
       <Tab.Screen

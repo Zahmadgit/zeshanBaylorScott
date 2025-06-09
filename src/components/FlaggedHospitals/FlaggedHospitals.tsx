@@ -8,9 +8,11 @@ const FlaggedHospitals = () => {
   const dispatch = useAppDispatch();
   const {flaggedHospitals} = useAppSelector(state => state.flaggedHospitals);
 
+  // Renders each flagged hospital as a touchable card
   const renderHospitalItem = ({item}: {item: any}) => (
     <TouchableOpacity
       style={styles.itemContainer}
+      // Tapping a hospital removes it from the flagged list
       onPress={() => dispatch(removeFlaggedHospital(item.id))}>
       <Text style={styles.itemTitle}>{item.hospital_name}</Text>
       <Text style={styles.itemDetail}>{item.hospital_state}</Text>
@@ -19,13 +21,14 @@ const FlaggedHospitals = () => {
       </Text>
     </TouchableOpacity>
   );
-
+  // Show a message if nothing is flagged yet
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Flagged Hospitals</Text>
       {flaggedHospitals.length === 0 ? (
         <Text>No hospitals flagged yet</Text>
       ) : (
+        // Otherwise, show the list of flagged hospitals
         <FlatList
           data={flaggedHospitals}
           renderItem={renderHospitalItem}
@@ -36,6 +39,7 @@ const FlaggedHospitals = () => {
   );
 };
 
+// Styling for layout and cards
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -49,10 +53,10 @@ const styles = StyleSheet.create({
   itemContainer: {
     padding: 16,
     marginBottom: 8,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: 'lightgray',
   },
   itemTitle: {
     fontSize: 18,
@@ -61,8 +65,8 @@ const styles = StyleSheet.create({
   },
   itemDetail: {
     fontSize: 16,
-    color: '#666',
+    color: 'gray',
   },
 });
 
-export default FlaggedHospitals;
+export default React.memo(FlaggedHospitals);

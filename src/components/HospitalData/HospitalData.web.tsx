@@ -1,9 +1,10 @@
-import React, {useEffect, useRef, useCallback} from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
-import {useAppDispatch, useAppSelector} from '../../store/hooks';
-import {setPage, addItems} from '../../store/paginationSlice';
-import {useGetHospitalDataQuery} from '../../api/hospitalApi';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { setPage, addItems } from '../../store/paginationSlice';
+import { useGetHospitalDataQuery } from '../../api/hospitalApi';
 import DateFormatter from '../../helpers/DateFormatter';
+
 
 interface Hospital {
   hospital_name: string;
@@ -15,37 +16,42 @@ interface Props {
   navigation: any;
 }
 
-const HospitalData = ({navigation}: Props) => {
+const HospitalData = ({ navigation }: Props) => {
   const dispatch = useAppDispatch();
-  const {currentPage, itemsPerPage, allItems} = useAppSelector(
-    state => state.pagination,
+  const { currentPage, itemsPerPage, allItems } = useAppSelector(
+    state => state.pagination
   );
 
-  const {data, isLoading, isFetching, error} = useGetHospitalDataQuery({
+  // Fetch data using RTK Query, passing current pagination info
+  const { data, isLoading, isFetching, error } = useGetHospitalDataQuery({
     limit: itemsPerPage,
     offset: (currentPage - 1) * itemsPerPage,
   });
 
+  // Ref to track the scrollable container
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Add new data to the store whenever it arrives
   useEffect(() => {
     if (data?.length) {
       dispatch(addItems(data));
     }
   }, [data, dispatch]);
 
+  // When we want to load more, just move to the next page
   const handleLoadMore = useCallback(() => {
     if (!isFetching) {
       dispatch(setPage(currentPage + 1));
     }
   }, [currentPage, isFetching, dispatch]);
 
+  // Setup scroll listener to load more when you're near the bottom
   useEffect(() => {
     const element = scrollRef.current;
     if (!element) return;
 
     const handleScroll = () => {
-      const {scrollTop, scrollHeight, clientHeight} = element;
+      const { scrollTop, scrollHeight, clientHeight } = element;
       const threshold = 0.1;
       const isNearBottom =
         scrollTop + clientHeight >= scrollHeight * (1 - threshold);
@@ -55,15 +61,18 @@ const HospitalData = ({navigation}: Props) => {
       }
     };
 
+    // Attach scroll listener
     element.addEventListener('scroll', handleScroll);
+    // Clean up when unmounted or re-run
     return () => element.removeEventListener('scroll', handleScroll);
   }, [handleLoadMore, isFetching]);
 
+  // Renders each hospital card
   const renderHospitalItem = useCallback(
     (item: Hospital) => (
       <ItemContainer
         onClick={() =>
-          navigation.navigate('HospitalDetails', {hospitalData: item})
+          navigation.navigate('HospitalDetails', { hospitalData: item })
         }>
         <ItemTitle>{item.hospital_name}</ItemTitle>
         <ItemDetail>{item.hospital_state}</ItemDetail>
@@ -72,22 +81,25 @@ const HospitalData = ({navigation}: Props) => {
         </ItemDetail>
       </ItemContainer>
     ),
-    [navigation],
+    [navigation]
   );
 
   return (
     <Container ref={scrollRef}>
       {isLoading ? (
+        // Show loading screen while the initial data is loading
         <Loading>
           <div>
             <span>Loading...</span>
           </div>
         </Loading>
       ) : error ? (
+        // If something breaks, let the user know
         <ErrorBox>
           <div>Error loading data: {error?.message || 'An error occurred'}</div>
         </ErrorBox>
       ) : (
+        // Actual hospital list, If we're loading more (pagination), show a small spinner
         <List>
           {allItems.map((item: Hospital, index: number) => (
             <ItemWrapper key={index}>{renderHospitalItem(item)}</ItemWrapper>
@@ -105,14 +117,16 @@ const HospitalData = ({navigation}: Props) => {
   );
 };
 
-export default HospitalData;
+export default React.memo(HospitalData);
+
+// Styled-components for the UI — makes the JSX nice and clean, specifically for web
 
 const Container = styled.div`
   height: 100vh;
   overflow-y: auto;
   padding: 16px;
   box-sizing: border-box;
-  background-color: #f1f3f5;
+  background-color: lightgray;
 `;
 
 const Loading = styled.div`
@@ -127,8 +141,8 @@ const ErrorBox = styled.div`
   justify-content: center;
   align-items: center;
   padding: 20px;
-  color: #dc3545;
-  background-color: #ffe3e3;
+  color: red;
+  background-color: lightgray;
   border-radius: 8px;
   font-weight: 500;
 `;
@@ -144,15 +158,15 @@ const ItemWrapper = styled.div`
 `;
 
 const ItemContainer = styled.div`
-  background-color: #f8f9fa;
+  background-color: lightgray;
   padding: 16px;
   border-radius: 8px;
-  border: 1px solid #e9ecef;
+  border: 1px solid lightgray;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.2s;
 
   &:hover {
-    background-color: #e9ecef;
+    background-color: lightgray;
     transform: scale(1.01);
   }
 `;
@@ -161,11 +175,11 @@ const ItemTitle = styled.div`
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 8px;
-  color: #212529;
+  color: black;
 `;
 
 const ItemDetail = styled.div`
   font-size: 14px;
   margin-bottom: 4px;
-  color: #495057;
+  color: black;
 `;

@@ -1,6 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Platform} from 'react-native';
 import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
+
+const isWeb = Platform.OS === 'web';
 
 type Props = {
   totalBeds: number;
@@ -26,7 +28,7 @@ const Stats = ({totalBeds, occupiedBeds, availableBeds}: Props) => {
         style={styles.statItem}
         accessible={true}
         accessibilityLabel={`Occupied beds: ${occupiedBeds.toFixed(0)}`}>
-        <Text style={[styles.statNumber, {color: '#FF6384'}]}>
+        <Text style={[styles.statNumber, {color: 'red'}]}>
           {occupiedBeds.toFixed(0)}
         </Text>
         <Text style={styles.statLabel}>Occupied</Text>
@@ -35,7 +37,7 @@ const Stats = ({totalBeds, occupiedBeds, availableBeds}: Props) => {
         style={styles.statItem}
         accessible={true}
         accessibilityLabel={`Available beds: ${availableBeds.toFixed(0)}`}>
-        <Text style={[styles.statNumber, {color: '#36A2EB'}]}>
+        <Text style={[styles.statNumber, {color: 'blue'}]}>
           {availableBeds.toFixed(0)}
         </Text>
         <Text style={styles.statLabel}>Available</Text>
@@ -49,21 +51,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: moderateScale(16),
-    borderBottomWidth: scale(1),
-    borderBottomColor: '#ddd',
+    backgroundColor: 'white',
+    borderRadius: scale(8),
+    ...(isWeb && {
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    }),
   },
   statItem: {
     alignItems: 'center',
+    flex: 1,
+    paddingHorizontal: moderateScale(8),
   },
   statNumber: {
     fontSize: moderateScale(24),
     fontWeight: 'bold',
+    marginBottom: verticalScale(4),
   },
   statLabel: {
     fontSize: moderateScale(16),
-    color: '#666',
-    marginTop: verticalScale(4),
+    color: 'gray',
+    textAlign: 'center',
   },
 });
 
-export default Stats;
+export default React.memo(Stats);

@@ -1,6 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Platform} from 'react-native';
 import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
+
+const isWeb = Platform.OS === 'web';
 
 type Props = {
   totalBeds: number;
@@ -11,12 +13,14 @@ const Occupancy = ({totalBeds, occupiedBeds}: Props) => {
   const occupancyRate = ((occupiedBeds / totalBeds) * 100).toFixed(1);
 
   return (
-    <View
+    <View 
       style={styles.occupancyContainer}
       accessible={true}
       accessibilityLabel={`Current occupancy rate: ${occupancyRate}%`}
       accessibilityHint="Shows the percentage of beds currently occupied">
-      <Text style={styles.occupancyText}>Occupancy Rate: {occupancyRate}%</Text>
+      <Text style={styles.occupancyText}>
+        Occupancy Rate: {occupancyRate}%
+      </Text>
     </View>
   );
 };
@@ -24,13 +28,18 @@ const Occupancy = ({totalBeds, occupiedBeds}: Props) => {
 const styles = StyleSheet.create({
   occupancyContainer: {
     padding: moderateScale(16),
-    borderTopWidth: scale(1),
-    borderTopColor: '#ddd',
+    backgroundColor: 'white',
+    borderRadius: scale(8),
+    alignItems: 'center',
+    ...(isWeb && {
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    }),
   },
   occupancyText: {
     fontSize: moderateScale(18),
     fontWeight: 'bold',
+    color: 'black',
   },
 });
 
-export default Occupancy;
+export default React.memo(Occupancy);
