@@ -1,192 +1,159 @@
-import React, {useEffect} from 'react';
-import {
-  FlatList,
-  View,
-  Text,
-  ActivityIndicator,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useEffect, useRef, useCallback} from 'react';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {setPage, addItems} from '../../store/paginationSlice';
 import {useGetHospitalDataQuery} from '../../api/hospitalApi';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import DateFormatter from '../../helpers/DateFormatter';
 
-type RootStackParamList = {
-  HospitalList: undefined;
-  HospitalDetails: {hospitalData: any};
-};
+interface Hospital {
+  hospital_name: string;
+  hospital_state: string;
+  collection_week: string;
+}
 
-type Props = NativeStackScreenProps<RootStackParamList, 'HospitalList'>;
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-};
+interface Props {
+  navigation: any;
+}
 
 const HospitalData = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
   const {currentPage, itemsPerPage, allItems} = useAppSelector(
     state => state.pagination,
   );
+
   const {data, isLoading, isFetching, error} = useGetHospitalDataQuery({
     limit: itemsPerPage,
     offset: (currentPage - 1) * itemsPerPage,
   });
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (data && data.length > 0) {
+    if (data?.length) {
       dispatch(addItems(data));
     }
   }, [data, dispatch]);
 
-  const handleLoadMore = () => {
+  const handleLoadMore = useCallback(() => {
     if (!isFetching) {
       dispatch(setPage(currentPage + 1));
     }
-  };
+  }, [currentPage, isFetching, dispatch]);
 
-  const renderHospitalItem = (item: any) => {
-    const lastUpdated = new Date(item.collection_date).toLocaleDateString();
-    return (
-      <TouchableOpacity
+  useEffect(() => {
+    const element = scrollRef.current;
+    if (!element) return;
+
+    const handleScroll = () => {
+      const {scrollTop, scrollHeight, clientHeight} = element;
+      const threshold = 0.1;
+      const isNearBottom =
+        scrollTop + clientHeight >= scrollHeight * (1 - threshold);
+
+      if (isNearBottom && !isFetching) {
+        handleLoadMore();
+      }
+    };
+
+    element.addEventListener('scroll', handleScroll);
+    return () => element.removeEventListener('scroll', handleScroll);
+  }, [handleLoadMore, isFetching]);
+
+  const renderHospitalItem = useCallback(
+    (item: Hospital) => (
+      <div
         style={styles.itemContainer}
-        onPress={() =>
+        onClick={() =>
           navigation.navigate('HospitalDetails', {hospitalData: item})
         }>
-        <Text style={styles.itemTitle}>{item.hospital_name}</Text>
-        <Text style={styles.itemDetail}>{item.hospital_state}</Text>
-        <Text style={styles.itemDetail}>
-          Last Updated: {formatDate(item.collection_date)}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
+        <div style={styles.itemTitle}>{item.hospital_name}</div>
+        <div style={styles.itemDetail}>{item.hospital_state}</div>
+        <div style={styles.itemDetail}>
+          Last Updated: {DateFormatter(item.collection_week)}
+        </div>
+      </div>
+    ),
+    [navigation],
+  );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.contentContainer}>
-        {isLoading ? (
-          <View style={styles.centered}>
-            <ActivityIndicator size="large" color="#0000ff" />
-          </View>
-        ) : error ? (
-          <Text style={styles.errorText}>Error loading data: {error.message}</Text>
-        ) : (
-          <FlatList
-            data={allItems}
-            renderItem={({item}) => renderHospitalItem(item)}
-            keyExtractor={item => item.hospital_name}
-            onEndReached={handleLoadMore}
-            onEndReachedThreshold={0.5}
-            ListFooterComponent={
-              isFetching ? (
-                <View style={styles.centered}>
-                  <ActivityIndicator size="large" color="#0000ff" />
-                </View>
-              ) : null
-            }
-            contentContainerStyle={styles.flatListContent}
-          />
-        )}
-      </View>
-    </View>
-    
+    <div ref={scrollRef} style={styles.container}>
+      {isLoading ? (
+        <div style={styles.loading}>
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      ) : error ? (
+        <div style={styles.error}>
+          <div>Error loading data: {error?.message || 'An error occurred'}</div>
+        </div>
+      ) : (
+        <div style={styles.list}>
+          {allItems.map((item: Hospital, index: number) => (
+            <div key={index} style={styles.itemWrapper}>
+              {renderHospitalItem(item)}
+            </div>
+          ))}
+          {isFetching && (
+            <div style={styles.loading}>
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
-    flex: 1,
+    height: '100vh',
+    overflowY: 'auto',
+    padding: '16px',
+    boxSizing: 'border-box',
   },
-  contentContainer: {
-    flex: 1,
-    padding: 16,
-  },
-  centered: {
-    flex: 1,
+  loading: {
+    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: '20px',
   },
-  flatListContent: {
-    flexGrow: 1,
-    paddingVertical: 8,
+  error: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '20px',
+    color: '#dc3545',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 16,
+  list: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+  itemWrapper: {
+    width: '100%',
   },
   itemContainer: {
-    padding: 16,
-    marginBottom: 16,
     backgroundColor: '#f8f9fa',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#e9ecef',
+    padding: '16px',
+    borderRadius: '8px',
+    border: '1px solid #e9ecef',
+    cursor: 'pointer',
+    transition: 'background-color 0.2s',
   },
   itemTitle: {
-    fontSize: 16,
+    fontSize: '16px',
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: '8px',
     color: '#212529',
   },
   itemDetail: {
-    fontSize: 14,
-    marginBottom: 4,
+    fontSize: '14px',
+    marginBottom: '4px',
     color: '#495057',
   },
-
-  legendItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: 8,
-    marginVertical: 4,
-  },
-  legendColor: {
-    width: 12,
-    height: 12,
-    marginRight: 4,
-    borderRadius: 2,
-  },
-  legendText: {
-    fontSize: 12,
-    color: '#495057',
-  },
-  noDataText: {
-    fontSize: 14,
-    color: '#6c757d',
-    fontStyle: 'italic',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 8,
-    fontSize: 14,
-    color: '#6c757d',
-  },
-  loadingFooter: {
-    padding: 16,
-    alignItems: 'center',
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  errorText: {
-    fontSize: 16,
-    color: '#dc3545',
-    textAlign: 'center',
-  },
-});
+};
 
 export default HospitalData;

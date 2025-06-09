@@ -11,6 +11,7 @@ import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {setPage, addItems} from '../../store/paginationSlice';
 import {useGetHospitalDataQuery} from '../../api/hospitalApi';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import DateFormatter from '../../helpers/DateFormatter';
 
 type RootStackParamList = {
   HospitalList: undefined;
@@ -19,15 +20,6 @@ type RootStackParamList = {
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HospitalList'>;
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-};
 
 const HospitalData = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
@@ -52,7 +44,6 @@ const HospitalData = ({navigation}: Props) => {
   };
 
   const renderHospitalItem = (item: any) => {
-    const lastUpdated = new Date(item.collection_date).toLocaleDateString();
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -62,7 +53,7 @@ const HospitalData = ({navigation}: Props) => {
         <Text style={styles.itemTitle}>{item.hospital_name}</Text>
         <Text style={styles.itemDetail}>{item.hospital_state}</Text>
         <Text style={styles.itemDetail}>
-          Last Updated: {formatDate(item.collection_date)}
+          Last Updated: {DateFormatter(item.collection_week)}
         </Text>
       </TouchableOpacity>
     );

@@ -1,34 +1,21 @@
 import React from 'react';
-import {
-  FlatList,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { removeFlaggedHospital } from '../../store/flaggedHospitalsSlice';
-
-interface FlaggedHospital {
-  id: string;
-  hospital_name: string;
-  hospital_state: string;
-  collection_week: string;
-}
+import {FlatList, View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {useAppDispatch, useAppSelector} from '../../store/hooks';
+import {removeFlaggedHospital} from '../../store/flaggedHospitalsSlice';
+import DateFormatter from '../../helpers/DateFormatter';
 
 const FlaggedHospitals = () => {
   const dispatch = useAppDispatch();
-  const { flaggedHospitals } = useAppSelector((state) => state.flaggedHospitals);
+  const {flaggedHospitals} = useAppSelector(state => state.flaggedHospitals);
 
-  const renderHospitalItem = ({ item }: { item: any }) => (
+  const renderHospitalItem = ({item}: {item: any}) => (
     <TouchableOpacity
       style={styles.itemContainer}
-      onPress={() => dispatch(removeFlaggedHospital(item.id))}
-    >
+      onPress={() => dispatch(removeFlaggedHospital(item.id))}>
       <Text style={styles.itemTitle}>{item.hospital_name}</Text>
       <Text style={styles.itemDetail}>{item.hospital_state}</Text>
       <Text style={styles.itemDetail}>
-        Last Updated: {item.collection_week}
+        Last Updated: {DateFormatter(item.collection_week)}
       </Text>
     </TouchableOpacity>
   );
@@ -42,7 +29,7 @@ const FlaggedHospitals = () => {
         <FlatList
           data={flaggedHospitals}
           renderItem={renderHospitalItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
         />
       )}
     </View>
