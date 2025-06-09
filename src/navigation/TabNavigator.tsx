@@ -22,14 +22,14 @@ export default function TabNavigator() {
         name="Hospitals"
         component={NavigationScreen}
         options={{
-          tabBarLabel: 'Hospitals',
+          tabBarLabel: 'Hospitals', headerShown: false
         }}
       />
       <Tab.Screen
         name="Flagged"
         component={FlaggedHospitalsScreen}
         options={{
-          tabBarLabel: 'Flagged',
+          tabBarLabel: 'Flagged', headerShown: false
         }}
       />
     </Tab.Navigator>

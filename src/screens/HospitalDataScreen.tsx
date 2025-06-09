@@ -1,12 +1,18 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import HospitalData from '../components/HospitalData/HospitalData';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const HospitalDataScreen = ({ navigation }: any) => {
+interface Props {
+  navigation: any;
+  route: any;
+}
+
+const HospitalDataScreen = ({ navigation, route }: Props) => {
   return (
-    <View style={styles.container}>
-      <HospitalData navigation={navigation} />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <HospitalData navigation={navigation} route={route} />
+    </SafeAreaView>
   );
 };
 

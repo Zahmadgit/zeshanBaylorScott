@@ -5,19 +5,13 @@ import HospitalDetails from '../components/HospitalDetails/HospitalDetails';
 
 const Stack = createNativeStackNavigator();
 
-type RootStackParamList = {
-  NavigationScreen: undefined;
-  HospitalData: undefined;
-  HospitalDetails: { hospitalData: { hospital_name: string } };
-};
-
 const NavigationScreen = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="HospitalData"
         component={HospitalDataScreen}
-        options={{ title: 'Hospitals' }}
+        options={{ title: 'Hospitals', headerShown: false }}
       />
       <Stack.Screen
         name="HospitalDetails"

@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import FlaggedHospitals from '../components/FlaggedHospitals/FlaggedHospitals';
 
 const FlaggedHospitalsScreen = () => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <FlaggedHospitals />
-    </View>
+    </SafeAreaView>
   );
 };
 

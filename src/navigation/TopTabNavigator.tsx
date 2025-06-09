@@ -22,7 +22,7 @@ export default function TopTabNavigator() {
         name="Hospitals"
         component={NavigationScreen}
         options={{
-          tabBarLabel: 'Hospitals',
+          tabBarLabel: 'Hospitals', 
         }}
       />
       <Tab.Screen
