@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import HospitalData from '../components/HospitalData/HospitalData';
+import HospitalData from '../components/hospitalDataComponents/HospitalData';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 interface Props {

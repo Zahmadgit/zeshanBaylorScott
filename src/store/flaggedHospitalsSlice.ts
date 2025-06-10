@@ -5,6 +5,7 @@ interface FlaggedHospital {
   hospital_name: string;
   hospital_state: string;
   collection_week: string;
+  address: string;
 }
 
 interface FlaggedHospitalsState {

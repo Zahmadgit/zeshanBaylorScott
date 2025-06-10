@@ -19,6 +19,7 @@ const FlaggedHospitals = () => {
       <Text style={styles.itemDetail}>
         Last Updated: {DateFormatter(item.collection_week)}
       </Text>
+      <Text style={styles.itemDetail}>Location: {item.address}</Text>
     </TouchableOpacity>
   );
   // Show a message if nothing is flagged yet
@@ -32,7 +33,7 @@ const FlaggedHospitals = () => {
         <FlatList
           data={flaggedHospitals}
           renderItem={renderHospitalItem}
-          keyExtractor={item => item.id}
+          keyExtractor={(_, index) => index.toString()}
         />
       )}
     </View>

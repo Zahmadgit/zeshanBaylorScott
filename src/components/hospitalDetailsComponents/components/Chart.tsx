@@ -15,8 +15,8 @@ type Props = {
 const Chart = ({totalBeds, occupiedBeds}: Props) => {
   // Calculate available beds while making sure values are safe (no negatives)
   const availableBeds = totalBeds - occupiedBeds;
-  const safeAvailableBeds = Math.max(0, availableBeds);
-  const safeOccupiedBeds = Math.min(occupiedBeds, totalBeds);
+  const safeAvailableBeds = Math.round(Math.max(0, availableBeds));
+  const safeOccupiedBeds = Math.round(Math.min(occupiedBeds, totalBeds));
 
   // Data passed to the PieChart dont round to nearest decimal, chart legend data, pie chart wont display
   const pieData = [

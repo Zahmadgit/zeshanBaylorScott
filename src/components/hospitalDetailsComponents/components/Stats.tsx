@@ -21,7 +21,7 @@ const Stats = ({totalBeds, occupiedBeds, availableBeds}: Props) => {
         style={styles.statItem}
         accessible={true}
         accessibilityLabel={`Total beds: ${totalBeds.toFixed(0)}`}>
-        <Text style={styles.statNumber}>{totalBeds.toFixed(0)}</Text>
+        <Text style={styles.statNumber}>{Math.round(totalBeds)}</Text>
         <Text style={styles.statLabel}>Total Beds</Text>
       </View>
       <View
@@ -29,16 +29,16 @@ const Stats = ({totalBeds, occupiedBeds, availableBeds}: Props) => {
         accessible={true}
         accessibilityLabel={`Occupied beds: ${occupiedBeds.toFixed(0)}`}>
         <Text style={[styles.statNumber, styles.statNumberOccupied]}>
-          {occupiedBeds.toFixed(0)}
+          {Math.round(occupiedBeds)}
         </Text>
         <Text style={styles.statLabel}>Occupied</Text>
       </View>
       <View
         style={styles.statItem}
         accessible={true}
-        accessibilityLabel={`Available beds: ${availableBeds.toFixed(0)}`}>
+        accessibilityLabel={`Available${availableBeds.toFixed(0)}`}>
         <Text style={styles.statNumberAvailable}>
-          {availableBeds.toFixed(0)}
+          {Math.round(availableBeds)}
         </Text>
         <Text style={styles.statLabel}>Available</Text>
       </View>

@@ -10,7 +10,10 @@ type Props = {
 };
 
 const Occupancy = ({totalBeds, occupiedBeds}: Props) => {
-  const occupancyRate = ((occupiedBeds / totalBeds) * 100).toFixed(1);
+  const occupancyRate = (
+    (Math.round(occupiedBeds) / Math.round(totalBeds)) *
+    100
+  ).toFixed(2);
 
   return (
     <View

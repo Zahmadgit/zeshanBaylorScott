@@ -2,6 +2,8 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import NavigationScreen from '../screens/NavigationScreen';
 import FlaggedHospitalsScreen from '../screens/FlaggedHospitalsScreen';
+import HospitalTabIcon from '../components/tabIconsComponents/HospitalTabIcon';
+import FlaggedTabIcon from '../components/tabIconsComponents/FlaggedTabIcon';
 
 // Define the tabs and their params (none needed here)
 type TabParamList = {
@@ -16,7 +18,7 @@ const TabNavigator = () => {
     // Set up the bottom tab navigator with custom active/inactive colors
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: 'green', // green when active
+        tabBarActiveTintColor: 'blue', // blue's more vibrant than green
         tabBarInactiveTintColor: 'gray', // gray when inactive
       }}>
       <Tab.Screen
@@ -25,6 +27,7 @@ const TabNavigator = () => {
         options={{
           tabBarLabel: 'Hospitals',
           headerShown: false, // hide header for clean look
+          tabBarIcon: HospitalTabIcon,
         }}
       />
       <Tab.Screen
@@ -33,6 +36,7 @@ const TabNavigator = () => {
         options={{
           tabBarLabel: 'Flagged',
           headerShown: false, // no header here either
+          tabBarIcon: FlaggedTabIcon,
         }}
       />
     </Tab.Navigator>

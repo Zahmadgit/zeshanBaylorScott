@@ -45,6 +45,7 @@ const HospitalDetails = ({route, navigation}: Props) => {
           hospital_name: hospitalData.hospital_name,
           hospital_state: hospitalData.hospital_state,
           collection_week: hospitalData.collection_week,
+          address: hospitalData.address,
         }),
       );
     }
