@@ -10,6 +10,17 @@ This is a new [**React Native**](https://reactnative.dev) project, originally bo
 
 ---
 
+## Step 0: npm install
+
+Lets install our dependencies first
+
+````sh
+# Using npm
+npm install
+
+
+---
+
 ## Step 1: Start Metro
 
 Metro is the JavaScript bundler for React Native. To start it, run the following command from your project root:
@@ -20,7 +31,7 @@ npm start
 
 # OR using Yarn
 yarn start
-```
+````
 
 ---
 
@@ -28,7 +39,7 @@ yarn start
 
 With Metro running, open a new terminal and run one of the following depending on your platform:
 
-###  Android
+### Android
 
 ```sh
 npx expo run:android
@@ -70,5 +81,3 @@ npx expo start --web
 If everything is set up correctly, your app should now be running on your emulator, simulator, device, or web browser.
 
 You can also open the project directly in **Android Studio** or **Xcode** if you prefer working in those environments.
-
-
