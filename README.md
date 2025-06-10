@@ -1,4 +1,4 @@
-# React Native + Expo Project
+React Native + Expo Project
 
 This is a new [**React Native**](https://reactnative.dev) project, originally bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli) and later **migrated to Expo** for easier integration with **React Native Web**.
 
@@ -10,14 +10,14 @@ This is a new [**React Native**](https://reactnative.dev) project, originally bo
 
 ---
 
-## Step 0: npm install
+## Step 0: Install Dependencies
 
-Lets install our dependencies first
+Let's install our dependencies first:
 
-````sh
+```sh
 # Using npm
 npm install
-
+```
 
 ---
 
@@ -31,7 +31,7 @@ npm start
 
 # OR using Yarn
 yarn start
-````
+```
 
 ---
 
@@ -51,7 +51,7 @@ This will build and launch the app on an Android device or emulator.
 
 ### iOS
 
-> **Note:** If you’re using Expo with bare workflow, **CocoaPods installation is automated**.
+> **Note:** If you’re using Expo with the bare workflow, **CocoaPods installation is automated**.
 
 If needed (e.g., when manually managing native dependencies), you can still do:
 
@@ -68,7 +68,7 @@ npx expo run:ios
 
 ---
 
-## Web
+### Web
 
 To run the app in the browser using React Native Web:
 
