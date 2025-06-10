@@ -1,4 +1,9 @@
 {
   "name": "zeshanBaylorScott",
-  "displayName": "zeshanBaylorScott"
+  "displayName": "zeshanBaylorScott",
+  "extra": {
+    "eas": {
+      "projectId": "da228b38-a5ec-46aa-aaf3-194961b0ba2a"
+    }
+  }
 }

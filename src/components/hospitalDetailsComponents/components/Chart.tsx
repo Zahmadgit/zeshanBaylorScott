@@ -73,7 +73,7 @@ const Chart = ({totalBeds, occupiedBeds}: Props) => {
           chartConfig={chartConfig}
           accessor="population"
           backgroundColor="transparent"
-          paddingLeft={isWeb ? '0' : '15'}
+          paddingLeft={isWeb ? '25' : '15'}
           absolute // Shows exact numbers instead of percentages
         />
       </View>
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   chartContainer: {
     borderColor: 'lightgray',
     borderWidth: 1,
-    padding: moderateScale(16),
+    padding: moderateScale(5),
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: scale(8),
