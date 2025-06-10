@@ -1,5 +1,12 @@
-import React from 'react';
-import {View, Text, StyleSheet, ScrollView, Platform} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Platform,
+  Dimensions,
+} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {
@@ -14,7 +21,7 @@ import {moderateScale, verticalScale} from 'react-native-size-matters';
 
 const isWeb = Platform.OS === 'web';
 const maxContentWidth = 1200; // Maximum width for web content
-
+const screenWidth = Dimensions.get('window').width;
 // Type definitions for navigation, hospital data, and flagged hospitals
 type RootStackParamList = {
   HospitalList: undefined;
@@ -25,6 +32,16 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'HospitalDetails'>;
 
 const HospitalDetails = ({route, navigation}: Props) => {
+  const [screenWidth, setScreenWidth] = useState(
+    Dimensions.get('window').width,
+  );
+  useEffect(() => {
+    const handleChange = ({window}: {window: any}) => {
+      setScreenWidth(window.width);
+    };
+    const subscription = Dimensions.addEventListener('change', handleChange);
+    return () => subscription?.remove();
+  }, []);
   const {hospitalData} = route.params;
   const dispatch = useAppDispatch();
   const {flaggedHospitals} = useAppSelector(state => state.flaggedHospitals);
@@ -103,7 +120,11 @@ const HospitalDetails = ({route, navigation}: Props) => {
           toggleFlag={toggleFlag}
           isFlagged={isFlagged}
         />
-        <View style={styles.contentGrid}>
+        <View
+          style={[
+            styles.contentGrid,
+            {flexDirection: screenWidth > 800 ? 'row' : 'column'},
+          ]}>
           <View style={styles.leftColumn}>
             <Stats
               totalBeds={totalBeds}
@@ -149,7 +170,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(16),
   },
   contentGrid: {
-    flexDirection: isWeb ? 'row' : 'column',
+    flexDirection: 'column',
+
     gap: moderateScale(16),
     marginTop: verticalScale(16),
   },
