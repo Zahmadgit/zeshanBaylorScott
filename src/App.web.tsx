@@ -4,10 +4,29 @@ import {Provider} from 'react-redux';
 import {store} from './store/store';
 import PlatformNavigation from './navigation/PlatformNavigation';
 
+// URL linking config for web navigation, web apps love this one simple trick
+const linking = {
+  config: {
+    screens: {
+      TabNavigator: {
+        screens: {
+          Hospitals: {
+            screens: {
+              HospitalData: 'hospitals',
+              HospitalDetails: 'hospitals/details',
+            },
+          },
+          Flagged: 'flagged',
+        },
+      },
+    },
+  },
+};
+
 const App = () => {
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      <NavigationContainer linking={linking}>
         <PlatformNavigation />
       </NavigationContainer>
     </Provider>
