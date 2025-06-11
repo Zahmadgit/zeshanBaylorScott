@@ -21,7 +21,6 @@ import {moderateScale, verticalScale} from 'react-native-size-matters';
 
 const isWeb = Platform.OS === 'web';
 const maxContentWidth = 1200; // Maximum width for web content
-const screenWidth = Dimensions.get('window').width;
 // Type definitions for navigation, hospital data, and flagged hospitals
 type RootStackParamList = {
   HospitalList: undefined;
