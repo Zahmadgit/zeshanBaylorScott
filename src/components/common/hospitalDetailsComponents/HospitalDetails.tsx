@@ -8,11 +8,11 @@ import {
   Dimensions,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {useAppDispatch, useAppSelector} from '../../store/hooks';
+import {useAppDispatch, useAppSelector} from '../../../store/hooks';
 import {
   addFlaggedHospital,
   removeFlaggedHospital,
-} from '../../store/flaggedHospitalsSlice';
+} from '../../../store/flaggedHospitalsSlice';
 import Header from './components/Header';
 import Stats from './components/Stats';
 import Chart from './components/Chart';
@@ -34,6 +34,7 @@ const HospitalDetails = ({route, navigation}: Props) => {
   const [screenWidth, setScreenWidth] = useState(
     Dimensions.get('window').width,
   );
+
   useEffect(() => {
     const handleChange = ({window}: {window: any}) => {
       setScreenWidth(window.width);

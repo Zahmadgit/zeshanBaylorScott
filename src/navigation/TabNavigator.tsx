@@ -2,8 +2,8 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import NavigationScreen from '../screens/NavigationScreen';
 import FlaggedHospitalsScreen from '../screens/FlaggedHospitalsScreen';
-import HospitalTabIcon from '../components/tabIconsComponents/HospitalTabIcon';
-import FlaggedTabIcon from '../components/tabIconsComponents/FlaggedTabIcon';
+import HospitalTabIcon from '../components/common/tabIconsComponents/HospitalTabIcon';
+import FlaggedTabIcon from '../components/common/tabIconsComponents/FlaggedTabIcon';
 
 // Define the tabs and their params (none needed here)
 type TabParamList = {
@@ -12,7 +12,7 @@ type TabParamList = {
 };
 
 const Tab = createBottomTabNavigator<TabParamList>();
-
+// TODO: add swipe gestures for tab navigation
 const TabNavigator = () => {
   return (
     // Set up the bottom tab navigator with custom active/inactive colors

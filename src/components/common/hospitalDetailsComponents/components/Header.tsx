@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {useAppSelector} from '../../../store/hooks';
+import {useAppSelector} from '../../../../store/hooks';
 import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
 
 type Props = {
@@ -66,7 +66,7 @@ const Header = ({hospitalData, toggleFlag, isFlagged}: Props) => {
             ]}
             numberOfLines={1}
             adjustsFontSizeToFit>
-            {isFlagged ? 'Currently Flagged' : 'Flag'}
+            {isFlagged ? 'Flagged' : 'Flag'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   flagButton: {
-    padding: moderateScale(12),
+    padding: moderateScale(10),
     borderRadius: scale(8),
     backgroundColor: 'lightgray',
     minWidth: scale(100),
