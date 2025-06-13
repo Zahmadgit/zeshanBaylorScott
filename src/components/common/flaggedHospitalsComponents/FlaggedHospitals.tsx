@@ -17,6 +17,7 @@ const FlaggedHospitals = () => {
         {
           text: 'Cancel',
           style: 'cancel',
+          onPress: () => {},
         },
         {
           text: 'Unflag',
