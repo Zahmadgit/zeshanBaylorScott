@@ -44,6 +44,14 @@ jobs:
         EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
         EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
 
+    - name: Build Android AAB with EAS
+      run: |
+        npx eas build --platform android --profile production --non-interactive
+      if: ${{ env.DEPLOY_MOBILE == 'true' }}
+      env:
+        EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
+        EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
+
     - name: Build web
       run: |
         npx expo export --platform web
@@ -55,26 +63,6 @@ jobs:
       if: ${{ env.DEPLOY_WEB == 'true' }}
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-
-    - name: Build native
-      run: npx expo prebuild --clean
-      if: ${{ env.DEPLOY_MOBILE == 'true' }}
-
-    - name: Build Android
-      run: |
-        cd android
-        ./gradlew assembleRelease
-      if: ${{ env.DEPLOY_MOBILE == 'true' }}
-      env:
-        JAVA_HOME: ${{ runner.java.home }}
-
-    - name: Build iOS
-      run: |
-        cd ios
-        xcodebuild -workspace zeshanbaylorscott.xcworkspace -scheme zeshanbaylorscott -sdk iphonesimulator
-      if: ${{ env.DEPLOY_MOBILE == 'true' }}
-      env:
-        DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
 
   deploy:
     needs: build
