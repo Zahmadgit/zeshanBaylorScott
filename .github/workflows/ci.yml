@@ -1,0 +1,67 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run linting
+      run: npm run lint
+
+    - name: Run tests
+      run: npm run test
+
+    - name: Build app
+      run: npm run build
+
+    - name: Run Expo build
+      run: npx expo prebuild --clean
+
+    - name: Build Android
+      run: |
+        cd android
+        ./gradlew assembleRelease
+      env:
+        JAVA_HOME: ${{ runner.java.home }}
+
+    - name: Build iOS
+      run: |
+        cd ios
+        xcodebuild -workspace YourProjectName.xcworkspace -scheme YourProjectName -sdk iphonesimulator
+      env:
+        DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Deploy to Expo
+      run: |
+        npx expo publish
+      env:
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}

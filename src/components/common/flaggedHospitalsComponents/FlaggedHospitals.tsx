@@ -1,5 +1,12 @@
 import React from 'react';
-import {FlatList, View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  FlatList,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../store/hooks';
 import {removeFlaggedHospital} from '../../../store/flaggedHospitalsSlice';
 import DateFormatter from '../../../helpers/DateFormatter';
@@ -65,6 +72,12 @@ const FlaggedHospitals = () => {
           keyExtractor={(_, index) => index.toString()}
         />
       )}
+      <Button
+        title="Close"
+        onPress={() => {
+          window.alert('bruh');
+        }}
+      />
     </View>
   );
 };
