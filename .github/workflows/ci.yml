@@ -38,7 +38,7 @@ jobs:
 
     - name: Login to EAS
       run: |
-        echo "${{ secrets.EXPO_PASSWORD }}" | eas account:login --username ${{ secrets.EXPO_USERNAME }}
+        echo "${{ secrets.EXPO_PASSWORD }}" | eas login ${{ secrets.EXPO_USERNAME }}
       if: ${{ env.DEPLOY_WEB == 'true' }}
       env:
         EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
