@@ -33,6 +33,9 @@ jobs:
     - name: Run linting
       run: npm run lint
 
+    - name: Install eas-cli
+      run: npm install -g eas-cli
+
     - name: Build web
       run: |
         npx expo export --platform web
@@ -40,7 +43,7 @@ jobs:
 
     - name: Deploy web
       run: |
-        npx eas deploy --alias zeshanBaylorScott
+        eas deploy --alias zeshanBaylorScott
       if: ${{ env.DEPLOY_WEB == 'true' }}
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
