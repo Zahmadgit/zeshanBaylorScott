@@ -65,7 +65,7 @@ const FlaggedHospitals = () => {
       {flaggedHospitals.length === 0 ? (
         <View>
         <Text>No hospitals flagged yet</Text>
-        <Text>Testing CICD</Text>
+        <Text>Dawn of a new era</Text>
         </View>
       ) : (
         // Otherwise, show the list of flagged hospitals

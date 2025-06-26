@@ -36,6 +36,14 @@ jobs:
     - name: Install eas-cli
       run: npm install -g eas-cli
 
+    - name: Login to EAS
+      run: |
+        echo "${{ secrets.EXPO_PASSWORD }}" | eas login --non-interactive --username ${{ secrets.EXPO_USERNAME }}
+      if: ${{ env.DEPLOY_WEB == 'true' }}
+      env:
+        EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
+        EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
+
     - name: Build web
       run: |
         npx expo export --platform web
@@ -43,7 +51,7 @@ jobs:
 
     - name: Deploy web
       run: |
-        eas deploy --alias zeshanBaylorScott
+        eas deploy --alias zeshanBaylorScott --non-interactive
       if: ${{ env.DEPLOY_WEB == 'true' }}
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
