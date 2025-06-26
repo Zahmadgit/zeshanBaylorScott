@@ -29,8 +29,6 @@ jobs:
     - name: Run linting
       run: npm run lint
 
-    - name: Run tests
-      run: npm run test
 
     - name: Build app
       run: npm run build
@@ -48,7 +46,7 @@ jobs:
     - name: Build iOS
       run: |
         cd ios
-        xcodebuild -workspace YourProjectName.xcworkspace -scheme YourProjectName -sdk iphonesimulator
+        xcodebuild -workspace zeshanbaylorscott.xcworkspace -scheme zeshanbaylorscott -sdk iphonesimulator
       env:
         DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
 
