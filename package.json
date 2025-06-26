@@ -8,7 +8,11 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "expo export",
+    "build:web": "expo export",
+    "build:android": "expo prebuild && cd android && ./gradlew assembleRelease",
+    "build:ios": "expo prebuild && cd ios && xcodebuild -workspace zeshanbaylorscott.xcworkspace -scheme zeshanbaylorscott -sdk iphonesimulator"
   },
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
