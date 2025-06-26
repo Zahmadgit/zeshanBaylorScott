@@ -8,5 +8,11 @@
   },
   "web": {
     "favicon": "./assets/favIcons/hospitalFavIcon.png"
-  }
+  },
+  "runtimeVersion": "1.0.0",
+  "updates": {
+    "url": "https://u.expo.dev/da228b38-a5ec-46aa-aaf3-194961b0ba2a"
+  },
+  "android": {},
+  "ios": {}
 }

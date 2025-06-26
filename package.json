@@ -9,8 +9,8 @@
     "ios": "expo run:ios",
     "test": "jest",
     "lint": "eslint .",
-    "build": "expo export",
-    "build:web": "expo export",
+    "build": "expo export --platform web",
+    "build:web": "expo export --platform web",
     "build:android": "expo prebuild && cd android && ./gradlew assembleRelease",
     "build:ios": "expo prebuild && cd ios && xcodebuild -workspace zeshanbaylorscott.xcworkspace -scheme zeshanbaylorscott -sdk iphonesimulator"
   },
@@ -23,6 +23,7 @@
     "@react-navigation/stack": "^7.3.3",
     "@reduxjs/toolkit": "^2.8.2",
     "expo": "~53.0.0",
+    "expo-updates": "~0.28.15",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.3",
